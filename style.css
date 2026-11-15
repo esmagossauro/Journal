@@ -1,0 +1,430 @@
+/* CORES DO SITE */
+:root {
+    --bg-color: #f4f5f0;
+    --card-bg: #ffffff;
+    --primary: #8cb88b;
+    --primary-light: #d8e5d7;
+    --text-main: #4a524a;
+    --text-muted: #8c968c;
+}
+
+* {   /* remove quadrado azul de TUDO ao clicar */
+    -webkit-tap-highlight-color: transparent;}
+button:focus, div:focus, span:focus {  /* remove as bordinhas */
+    outline: none;}
+
+/* TRAVAR LAYOUT NO CELULAR - é a coisa toda, a tela toda */
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* SIMULA TELA DO APP */
+.app-container {
+    width: 100%;
+    max-width: 500px;
+    height: 100dvh;
+    max-height: 850px;
+    background-color: var(--bg-color);
+    display: flex;
+    flex-direction: column;
+    position: relative;          /* ele é a anconra para tudo que aparecer ficar dentro!!*/
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+/* Cabeçalho */
+header {
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--card-bg);
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    width: 90%;
+}
+
+.header-title {
+   font-size: 1.1rem;
+   cursor: pointer;
+}
+.header-title:hover {
+    color: var(--primary);
+}
+
+.coins {
+    font-size: 0.85rem;
+    font-weight: bold;
+    background: var(--bg-color);
+    padding: 5px 12px;
+    border-radius: 15px;
+}
+
+/* Área de conteúdo do meio */
+.content-area {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 20px; 
+    padding-left: 20px;
+    padding-bottom: 20px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Barra de navegação inferior fixa */
+.bottom-nav {
+    height: 60px;
+    background: var(--card-bg);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0 -4px 15px rgba(0,0,0,0.03);
+    position: relative;
+    z-index: 10;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+
+}
+
+.nav-btn:hover {
+    transform: scale(1.1);
+}
+
+.nav-btn.active {
+    background-color: var(--primary-light);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transform: none;    /* tira o o scal para não tremer */
+}
+
+/* Botão central do pet com destaque */
+.pet-btn {
+    background: var(--primary-light);
+    font-size: 1.8rem;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: -15px;
+    border: 3px solid var(--bg-color);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+
+
+/* =========================== JOURNAL AREA ============================= */
+
+#tab-journal.active {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    overflow-y: auto;
+    height: 100%;
+}
+
+/* Cabeçalho do Diário (Mês e botão de modo) */
+.journal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10px 0 10px;
+    color: var(--text-main); 
+}
+.header-change-mode {
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: color 0.2s;
+}
+
+.header-change-mode:hover {
+    color: var(--primary);
+}
+
+.header-month {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+.current-month {
+    width: 5.5rem;
+    text-align: center;
+}
+.month-btn {
+    background: none;
+    cursor: pointer;
+    border: none;
+    font-size: 1.2rem;
+}
+.month-btn:hover {
+    color: var(--primary);
+}
+
+
+
+
+
+/* Grade do Calendário (7 colunas para os 7 dias da semana) */
+.calendar-view {
+    background: none;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    
+    /* Mágica da grade de 7 colunas iguais */
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 12px 6px; /* 12px entre linhas, 6px entre colunas */
+    justify-items: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+/* Cada célula do dia vira uma coluna (bolinha em cima, número embaixo) */
+.calendar-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px; /* Espacinho entre a bolinha e o número */
+    cursor: pointer;
+}
+
+.calendar-weekday {
+    font-size: 0.8rem;
+    color: var(--text-main);
+    opacity: 0.5;
+}
+
+/* A bolinha do humor/registro */
+.day-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #ececec;
+    transition: transform 0.2s, background-color 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.day-circle img {
+    width: 105%;
+    height: 105%;
+    object-fit: cover;
+}
+
+.calendar-day:hover:not(.empty) .day-circle {
+    transform: scale(1.1);
+    background-color: var(--primary-light);
+}
+
+/* O número do dia logo abaixo */
+.day-number {
+    font-size: 0.75rem;
+    color: var(--text-main);
+    font-weight: 500;
+    opacity: 0.7;
+}
+
+/* Destaque para o dia de hoje na bolinha */
+.day-circle.today {
+    border: 2px solid var(--primary-color, #6b9e78);
+}
+
+.day-circle.today:not(.empty){    /* paea quando tiver rostinh, não ter borda */
+    border: none;
+}
+
+/* Espaços vazios invisíveis */
+.calendar-day.empty {
+    cursor: default;
+}
+.calendar-day.empty .day-circle {
+    background-color: transparent;
+}
+
+/* Visão de lista (Ficará escondida até alternarmos o modo) */
+.list-view {
+    display: none;
+}
+
+
+
+
+
+/* Cartão "Como foi o seu dia?" */
+.daily-card {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px, 10px, 20px, 10px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+}
+
+.daily-card p {
+    margin: 15px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* Botões de humor (As carinhas) */
+.daily-card-humor {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+.daily-card-humor button {
+    background-color: var(--bg-color);
+    border: none;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; /* Deixa os botões redondinhos estilo feijão/DailyBean */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.daily-card-humor button img {
+    width: 50px;
+    height: 50px;
+}
+
+.daily-card-humor button:hover {
+    transform: scale(1.1); /* Dá um zoom fofinho ao passar o mouse */
+    background-color: var(--primary-light);
+}
+
+/* Visão de lista (Ficará escondida até alternarmos o modo) */
+.list-view {
+    display: none;
+}
+
+
+
+
+
+
+
+
+/* ===========================================    QUARTO DO PET ============================ */
+
+.tab-pet {
+    position: relative;  /* ancora para tudo */
+}
+
+/* Quarto do Pet centralizado */
+.room-pet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; 
+    gap: 200px;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.pet-avatar {
+    text-align: center;
+    animation: floatPet 3s ease-in-out infinite;
+    cursor: pointer;
+}
+
+.pet-avatar span {
+    font-size: 170px; /* Aumentado para dominar o centro da tela */
+    line-height: 1;
+    display: block;
+    filter: drop-shadow(0 12px 20px rgba(0,0,0,0.12));
+}
+
+@keyframes floatPet {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.pet-menu {
+    display: none;
+}
+
+.pet-menu.active {
+    display: flex;
+    flex-direction: column;
+    position: absolute; /* Flutua por cima de tudo sem empurrar o sapo */
+    top: 55px;          /* Distância exata logo abaixo do cabeçalho */
+    
+    left: 25px;
+
+    background-color: var(--card-bg);
+    width: 180px;       /* Um tamanho legal para caber os textos */
+    padding: 12px;
+    gap: 8px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    z-index: 20;        /* Garante que fica por cima do sapinho */
+    animation: fadeInPetMenu 0.2s ease-in-out;
+}
+
+.pet-menu button {
+    background-color: var(--bg-color);
+    border: none;
+    padding: 10px 14px;
+    text-align: center;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.pet-menu button:hover {
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+/* Pequena animação suave de aparição */
+@keyframes fadeInPetMenu {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
