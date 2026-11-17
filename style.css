@@ -360,15 +360,17 @@ header {
 }
 
 .journal-entry {
-    display: flex;
-    flex-direction: column;
     transform: translateY(100%);
     transition: transform 0.3s ease;
     background-color: var(--bg-color);
     width: 100%;
-    height: 97%;
+    max-height: 97%;
+    min-height: 90%;
+    display: flex;
+    flex-direction: column;
     box-sizing: border-box;
     border-radius: 30px 30px 0 0;
+    overflow: hidden;
 }
 
 .journal-entry-header {
