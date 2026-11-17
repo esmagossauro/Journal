@@ -28,6 +28,8 @@ let mesAtual = dataAtual.getMonth(); // 0 a 11 (Janeiro a Dezembro)
 let anoAtual = dataAtual.getFullYear(); // Ano atual (ex: 2026)
 let registros = JSON.parse(localStorage.getItem('meuDiarioRegistros')) || {};  // salva os arquivos
 const meses = ["jan.", "fev.", "mar.", "abr.", "mai.", "jun.", "jul.", "ago.", "set.", "out.", "nov.", "dez."];
+const mesesCompletos = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
+const diasCompletos = ["domingo", "segunda", "terça", "quarta", "quinta", "sexta", "sábado"]
 
 function renderCalendar() {
 
@@ -85,6 +87,15 @@ function renderCalendar() {
             dayCircle.classList.add('today');
         }
 
+        dayCell.addEventListener('click', function() {
+            const overlay = document.querySelector('.overlay');
+            const headerDate = document.querySelector('.entry-header-date');
+            const diaSemanaIndex = new Date(anoAtual, mesAtual, dia).getDay();
+
+            headerDate.textContent = `${diasCompletos[diaSemanaIndex]}, ${dia} de ${mesesCompletos[mesAtual]}`;
+            overlay.classList.add('active');
+        });
+
         calendarView.appendChild(dayCell);
     }
 }
@@ -137,6 +148,23 @@ btnProximo.addEventListener('click', function() {
     }
     renderCalendar(); // Redesenha o calendário na tela!
 });
+
+
+// ================== FECHAR MODAL DO DIÁRIO ==================
+const overlay = document.querySelector('.overlay');
+const btnFecharModal = document.querySelector('.entry-header-close');
+
+btnFecharModal.addEventListener('click', function() {
+    overlay.classList.remove('active');
+});
+
+// Fecha também se clicar fora da folha (no fundo escuro)
+overlay.addEventListener('click', function(event) {
+    if (event.target === overlay) {
+        overlay.classList.remove('active');
+    }
+});
+
 
 
 

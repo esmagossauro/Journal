@@ -199,7 +199,7 @@ header {
 
 
 
-/* Grade do Calendário (7 colunas para os 7 dias da semana) */
+/* ================ CALENDARIO */
 .calendar-view {
     background: none;
     border-radius: 20px;
@@ -285,10 +285,7 @@ header {
 }
 
 
-
-
-
-/* Cartão "Como foi o seu dia?" */
+/* ====================== CARTÃO ZINHO DIARIO */
 .daily-card {
     background-color: var(--card-bg);
     border-radius: 20px;
@@ -309,7 +306,7 @@ header {
     justify-content: space-around;
     align-items: center;
     padding-bottom: 20px;
-    padding-left: 5px;
+    padding-left: 5px;                 /* OLHA SE ESSA DISTANCIA FICOU BOA DEPOIS */
     padding-right: 5px;
 }
 
@@ -335,6 +332,78 @@ header {
     transform: scale(1.1); /* Dá um zoom fofinho ao passar o mouse */
     background-color: var(--primary-light);
 }
+
+/* ======================== ESCREVER ENTRADA DO DIARIO ======================== */
+
+.overlay {
+    display: flex;
+    align-items: flex-end;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 30;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.overlay.active .journal-entry {
+    transform: translateY(0);
+}
+
+.journal-entry {
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    background-color: var(--bg-color);
+    width: 100%;
+    height: 97%;
+    box-sizing: border-box;
+    border-radius: 30px 30px 0 0;
+}
+
+.journal-entry-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--text-muted);
+    color: var(--bg-color);
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 15px 30px 15px 30px;
+    border-radius: 20px 20px 0 0;
+}
+
+.entry-header-close:hover {
+    color: var(--text-main);
+    cursor: pointer;
+    font-weight: bold; 
+}
+
+.journal-entry-blocks {
+    flex: 1;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 /* Visão de lista (Ficará escondida até alternarmos o modo) */
 .list-view {
