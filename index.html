@@ -54,19 +54,65 @@
                         <div class="journal-entry">
 
                             <div class="journal-entry-header">
-                                <div class="entry-header-date"></div>
-                                <div class="entry-header-close">✗</div>
+                                <span class="entry-header-date"></span>
+                                <span class="entry-header-close">✗</span>
                             </div>
 
-                            <div class="journal-entry-blocks">
-                                <div class="entry-humor"></div>
-                                <textarea name="" id=""></textarea>
-                                <div class="entry-pics"></div>
+                            <div class="journal-entry-content">
+                                <div class="entry-card">
+                                    <p class="card-title">Como foi o seu dia?</p>
+                                    <div class="mood-options-row">
+                                    <!-- Seus botões de rostinho vão aqui dentro -->
+                                        <button humor-entry="img/feliz.png">
+                                            <img src="img/feliz.png" alt="Feliz">
+                                        </button>
+                                        <button humor-entry="img/bem.png">
+                                            <img src="img/bem.png" alt="Bem">
+                                        </button>
+                                        <button humor-entry="img/neutro.png">
+                                            <img src="img/neutro.png" alt="Neutro">
+                                        </button>
+                                        <button humor-entry="img/triste.png">
+                                            <img src="img/triste.png" alt="Triste">
+                                        </button>
+                                        <button humor-entry="img/mal.png">
+                                            <img src="img/mal.png" alt="Mal">
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- 3. Cartão de Nota de Hoje (Área de texto) -->
+                                <div class="entry-card">
+                                    <span class="card-title">Nota de hoje</span>
+                                    <textarea id="journal-text" placeholder="Escreva aqui..."></textarea>
+                                </div>
+
+                                <!-- 4. Cartão de Fotos -->
+                                <div class="entry-card">
+                                    <div class="photo-card-header">
+                                        <span class="card-title">Foto de hoje</span>
+                                        <button class="add-photo-icon-btn">+</button>
+                                    </div>
+                                    <div class="photo-slots-row">
+                                        <div class="photo-slot">
+                                            <img src="img/camera.svg" alt="Adicionar foto">
+                                        </div>
+                                        <div class="photo-slot">
+                                            <img src="img/camera.svg" alt="Adicionar foto">
+                                        </div>
+                                        <div class="photo-slot">
+                                            <img src="img/camera.svg" alt="Adicionar foto">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Rodapé fixo com o botão Concluir -->
+                                <div class="journal-entry-footer">
+                                    <button class="favorite-icon-btn">✩</button>
+                                    <button class="save-btn">Salvar</button>
+                                </div>
+
                             </div>
-
-                            <button class="entry-save">Salvar</button>
-
-
 
                         </div>
                     </div>
