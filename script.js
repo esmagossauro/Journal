@@ -25,6 +25,16 @@ const diasCompletos = ["domingo", "segunda", "terça", "quarta", "quinta", "sext
 
 let chaveDiaSelecionado = ''; // Guarda a chave do dia aberto no modal (ex: "2026-11-15")
 
+// Elementos do Card de Resumo na Tela Principal
+const dailyCardOriginal = document.querySelector('.daily-card'); 
+const entrySummaryCard = document.getElementById('entry-summary-card'); 
+const summaryMoodImg = document.getElementById('summary-mood-img');
+const summaryDateText = document.getElementById('summary-date-text');
+const summaryWeekdayText = document.getElementById('summary-weekday-text');
+const summaryTextContent = document.getElementById('summary-text-content');
+const btnEditEntry = document.getElementById('btn-edit-entry');
+const btnDeleteEntry = document.getElementById('btn-delete-entry');
+
 function renderCalendar() {
     const tituloMes = document.querySelector('.current-month');
     if (tituloMes) {
@@ -86,9 +96,41 @@ function renderCalendar() {
             dayCircle.classList.add('today');
         }
 
-        // Evento de clique para abrir o modal do dia específico
+        // Evento de clique para o dia no calendário
         dayCell.addEventListener('click', function() {
-            abrirModalParaDia(anoAtual, mesAtual, dia);
+            chaveDiaSelecionado = chaveDia;
+            const regDia = registros[chaveDiaSelecionado];
+
+            // Verifica se o dia já tem registro salvo (string antiga ou objeto novo)
+            const temRegistro = regDia && (
+                (typeof regDia === 'string' && regDia !== '') || 
+                (typeof regDia === 'object' && (regDia.humor || regDia.texto))
+            );
+
+            if (temRegistro) {
+                // --- SE JÁ TIVER REGISTRO: Mostra o cartão de resumo ---
+                if (dailyCardOriginal) dailyCardOriginal.style.display = 'none';
+                if (entrySummaryCard) entrySummaryCard.style.display = 'flex';
+
+                const humor = (typeof regDia === 'string') ? regDia : regDia.humor;
+                const texto = (typeof regDia === 'object') ? regDia.texto : '';
+
+                if (summaryMoodImg) summaryMoodImg.src = humor || '';
+                if (summaryTextContent) summaryTextContent.textContent = texto || 'Nenhum texto escrito.';
+
+                // Formata a data para o card de resumo
+                const nomeMes = meses[mesAtual];
+                const nomeDiaSemana = diasCompletos[new Date(anoAtual, mesAtual, dia).getDay()];
+
+                if (summaryDateText) summaryDateText.textContent = `${dia} de ${nomeMes}`;
+                if (summaryWeekdayText) summaryWeekdayText.textContent = `${nomeDiaSemana.slice(0, 3)}. · ${anoAtual}`;
+
+            } else {
+                // --- SE ESTIVER VAZIO: Abre o modal para preencher ---
+                if (entrySummaryCard) entrySummaryCard.style.display = 'none';
+                if (dailyCardOriginal) dailyCardOriginal.style.display = 'block';
+                abrirModalParaDia(anoAtual, mesAtual, dia);
+            }
         });
 
         calendarView.appendChild(dayCell);
@@ -124,6 +166,30 @@ function abrirModalParaDia(ano, mes, dia) {
 
 // Inicializa o calendário
 renderCalendar();
+
+// =============================== AÇÕES DO CARTÃO DE RESUMO (EDITAR / EXCLUIR) =================================
+if (btnEditEntry) {
+    btnEditEntry.addEventListener('click', function() {
+        if (!chaveDiaSelecionado) return;
+        const [ano, mes, dia] = chaveDiaSelecionado.split('-');
+        abrirModalParaDia(parseInt(ano), parseInt(mes) - 1, parseInt(dia));
+    });
+}
+
+if (btnDeleteEntry) {
+    btnDeleteEntry.addEventListener('click', function() {
+        if (!chaveDiaSelecionado) return;
+
+        // Remove o registro do dia
+        delete registros[chaveDiaSelecionado];
+        localStorage.setItem('meuDiarioRegistros', JSON.stringify(registros));
+
+        // Atualiza a interface
+        renderCalendar();
+        if (entrySummaryCard) entrySummaryCard.style.display = 'none';
+        if (dailyCardOriginal) dailyCardOriginal.style.display = 'block';
+    });
+}
 
 // =============================== SELEÇÃO DE HUMOR NO MODAL =================================
 const botoesHumorModal = document.querySelectorAll('.mood-options-row button');
@@ -162,7 +228,6 @@ botoesHumorPrincipal.forEach(botao => {
     botao.addEventListener('click', function() {
         const caminhoImagem = botao.getAttribute('data-humor');
 
-        // Pega a data de hoje
         const hoje = new Date();
         const ano = hoje.getFullYear();
         const mes = hoje.getMonth();
@@ -170,7 +235,6 @@ botoesHumorPrincipal.forEach(botao => {
         
         chaveDiaSelecionado = `${ano}-${mes + 1}-${dia}`;
 
-        // Salva o humor selecionado para o dia de hoje
         if (!registros[chaveDiaSelecionado] || typeof registros[chaveDiaSelecionado] !== 'object') {
             registros[chaveDiaSelecionado] = { humor: caminhoImagem, texto: '', fotos: [] };
         } else {
@@ -180,7 +244,6 @@ botoesHumorPrincipal.forEach(botao => {
         localStorage.setItem('meuDiarioRegistros', JSON.stringify(registros));
         renderCalendar();
 
-        // Abre o modal automaticamente no dia de hoje com o humor já marcado!
         abrirModalParaDia(ano, mes, dia);
     });
 });
@@ -203,11 +266,18 @@ if (btnSalvar) {
         }
         registros[chaveDiaSelecionado].texto = textarea.value;
 
-        // Salva definitivo no LocalStorage
         localStorage.setItem('meuDiarioRegistros', JSON.stringify(registros));
 
-        // Atualiza o calendário e fecha a abinha voltando para a tela principal
         renderCalendar();
+        
+        // Atualiza o card de resumo na tela principal se ele estiver ativo para esse dia
+        if (entrySummaryCard && summaryTextContent && summaryMoodImg) {
+            if (dailyCardOriginal) dailyCardOriginal.style.display = 'none';
+            entrySummaryCard.style.display = 'flex';
+            summaryMoodImg.src = registros[chaveDiaSelecionado].humor || '';
+            summaryTextContent.textContent = registros[chaveDiaSelecionado].texto || 'Nenhum texto escrito.';
+        }
+
         if (overlay) overlay.classList.remove('active');
     });
 }

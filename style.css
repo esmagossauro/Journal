@@ -664,3 +664,81 @@ header {
     from { opacity: 0; transform: translateY(-8px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+
+
+
+
+.entry-summary-card {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.summary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary-mood-and-date {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.summary-mood-icon {
+    width: 45px;
+    height: 45px;
+}
+
+.summary-date-main {
+    font-weight: bold;
+    font-size: 1rem;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.favorite-star {
+    cursor: pointer;
+    color: #ccc;
+}
+
+.summary-weekday {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.summary-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.summary-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 5px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.summary-actions button:hover {
+    background-color: var(--bg-color);
+}
+
+.summary-text-content {
+    font-size: 0.95rem;
+    color: var(--text-main);
+    line-height: 1.5;
+    white-space: pre-wrap; /* Mantém as quebras de linha que o usuário digitou */
+    word-break: break-word;
+}
