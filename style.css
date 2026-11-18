@@ -607,8 +607,8 @@ header {
     cursor: pointer;
 }
 
-.pet-avatar span {
-    font-size: 170px; /* Aumentado para dominar o centro da tela */
+.pet-avatar img {
+    width: 200px;
     line-height: 1;
     display: block;
     filter: drop-shadow(0 12px 20px rgba(0,0,0,0.12));
