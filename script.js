@@ -47,7 +47,7 @@ function ehDiaFuturo(ano, mes, dia) {
 function mostrarAvisoDiaFuturo() {
     const toast = document.getElementById('future-day-toast');
     if (!toast) {
-        alert("Ainda não chegou esse dia! Você só pode escrever notas de hoje ou de dias que já passaram.");
+        alert("Opa! Esse dia ainda não chegou.");
         return;
     }
 
@@ -144,14 +144,14 @@ function renderCalendar() {
                 const texto = (typeof regDia === 'object') ? regDia.texto : '';
 
                 if (summaryMoodImg) summaryMoodImg.src = humor || '';
-                if (summaryTextContent) summaryTextContent.textContent = texto || 'Nenhum texto escrito.';
+                if (summaryTextContent) summaryTextContent.textContent = texto || '';
 
                 // Formata a data para o card de resumo
                 const nomeMes = meses[mesAtual];
                 const nomeDiaSemana = diasCompletos[new Date(anoAtual, mesAtual, dia).getDay()];
 
                 if (summaryDateText) summaryDateText.textContent = `${dia} de ${nomeMes}`;
-                if (summaryWeekdayText) summaryWeekdayText.textContent = `${nomeDiaSemana.slice(0, 3)}. · ${anoAtual}`;
+                if (summaryWeekdayText) summaryWeekdayText.textContent = `${nomeDiaSemana.slice(0, 3)}. ${anoAtual}`;
 
             } else {
                 // --- SE ESTIVER VAZIO: Abre o modal para preencher ---

@@ -14,11 +14,11 @@
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent; /* Remove quadrado azul ao tocar no celular */
 }
-
-button:focus,
-div:focus,
-span:focus {
+button:focus, div:focus, span:focus {
     outline: none;
+}
+* span {
+    cursor: default;          /* não fica o cursor de selecionar em textos */
 }
 
 html,
@@ -347,7 +347,7 @@ header {
     background-color: var(--primary-light);
 }
 
-/* Cartão de resumo da entrada salva */
+/* ENTRADA SALVA */
 .entry-summary-card {
     background-color: var(--card-bg);
     border-radius: 20px;
@@ -414,6 +414,12 @@ header {
     background-color: var(--bg-color);
 }
 
+.summary-actions button img {
+    opacity: 0.3;
+    width: 23px;
+    height: 23px
+}
+
 .summary-text-content {
     font-size: 0.95rem;
     color: var(--text-main);
@@ -458,7 +464,7 @@ header {
     min-height: 90%;
     display: flex;
     flex-direction: column;
-    border-radius: 30px 30px 0 0;
+    border-radius: 20px 20px 0  0;
     overflow: hidden;
 }
 
@@ -472,13 +478,13 @@ header {
     font-size: 1.1rem;
     font-weight: bold;
     padding: 15px 30px;
-    border-radius: 20px 20px 0 0;
 }
-
+.entry-header-close {
+    transition: transform 0.2s;
+}
 .entry-header-close:hover {
-    color: var(--text-main);
+    transform: scale(1.1);
     cursor: pointer;
-    font-weight: bold;
 }
 
 .journal-entry-content {
