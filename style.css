@@ -21,6 +21,19 @@ button:focus, div:focus, span:focus {
     cursor: default;          /* não fica o cursor de selecionar em textos */
 }
 
+.content-area,
+#tab-journal.active,
+.journal-entry-content {
+    scrollbar-width: none;        /* Firefox */
+    -ms-overflow-style: none;     /* Edge antigo */
+}
+
+.content-area::-webkit-scrollbar,
+#tab-journal.active::-webkit-scrollbar,
+.journal-entry-content::-webkit-scrollbar {
+    display: none;                /* Chrome, Safari, Edge e Opera */
+}
+
 html,
 body {
     height: 100%;
@@ -214,6 +227,7 @@ header {
     justify-items: center;
     align-items: center;
     min-height: 300px;
+    flex-shrink: 0;
 }
 
 .calendar-weekday {
@@ -549,7 +563,7 @@ header {
 /* Campo de texto */
 #journal-text {
     margin-top: 14px;
-    width: 95%;
+    width: 100%;
     border: 1px solid #eee;
     border-radius: 12px;
     padding: 10px;
@@ -578,39 +592,64 @@ header {
 
 .add-photo-icon-btn {
     background: #e6f4ea;
-    color: #137333;
+    color: #7bbe91;
     border: none;
     width: 28px;
     height: 28px;
-    border-radius: 50%;
+    border-radius: 30%;
     font-weight: bold;
     cursor: pointer;
+    transition: transform 0.2s
 }
-
-.photo-slots-row {
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
+.add-photo-icon-btn:hover {
+    transform: scale(1.1);
 }
 
 .photo-slot {
-    flex: 1;
     height: 120px;
     border: 1px solid #dcdcdc;
     border-radius: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
-    color: #aaa;
     cursor: pointer;
+    overflow: hidden;
 }
 
-.photo-slots-row img {
+.photo-slot .slot-icon {
     width: 20px;
     height: 20px;
     opacity: 0.2;
 }
+
+.photo-slot .photo-modal-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Foto inclinadinha no cartão de resumo */
+.summary-photo-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 8px 0;
+}
+
+.summary-photo-tilted {
+    max-width: 78%;
+    max-height: 210px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 4px solid #ffffff;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    transform: rotate(-3deg);
+    transition: transform 0.2s ease;
+}
+
+.summary-photo-tilted:hover {
+    transform: rotate(0deg) scale(1.02);
+}
+
 
 /* Rodapé do modal */
 .journal-entry-footer {

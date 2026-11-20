@@ -80,6 +80,10 @@
                         </div>
                     </div>
 
+                    <div class="summary-photo-wrapper" id="summary-photo-wrapper" style="display: none;">
+                        <img id="summary-photo-img" src="" alt="Foto do dia" class="summary-photo-tilted">
+                    </div>
+
                     <div class="summary-text-content" id="summary-text-content"></div>
                 </div>
 
@@ -129,19 +133,13 @@
                             <div class="entry-card">
                                 <div class="photo-card-header">
                                     <span class="card-title">Foto de hoje</span>
-                                    <button type="button" class="add-photo-icon-btn">+</button>
+                                    <button type="button" class="add-photo-icon-btn" id="btn-choose-photo">+</button>
                                 </div>
-                                <div class="photo-slots-row">
-                                    <div class="photo-slot">
-                                        <img src="img/camera.svg" alt="Adicionar foto">
-                                    </div>
-                                    <div class="photo-slot">
-                                        <img src="img/camera.svg" alt="Adicionar foto">
-                                    </div>
-                                    <div class="photo-slot">
-                                        <img src="img/camera.svg" alt="Adicionar foto">
-                                    </div>
+
+                                <div class="photo-slot" id="photo-slot-modal">
+                                    <img src="img/camera.svg" alt="Adicionar foto" class="slot-icon" id="modal-photo-preview">
                                 </div>
+                                <input type="file" id="photo-file-input" accept="image/*" style="display: none;">
                             </div>
 
                             <!-- Rodapé com botão Salvar -->
