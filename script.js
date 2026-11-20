@@ -35,6 +35,29 @@ const summaryTextContent = document.getElementById('summary-text-content');
 const btnEditEntry = document.getElementById('btn-edit-entry');
 const btnDeleteEntry = document.getElementById('btn-delete-entry');
 
+let toastTimeout = null;
+
+function ehDiaFuturo(ano, mes, dia) {
+    const agora = new Date();
+    const hojeSemHora = new Date(agora.getFullYear(), agora.getMonth(), agora.getDate());
+    const dataClicadaSemHora = new Date(ano, mes, dia);
+    return dataClicadaSemHora > hojeSemHora;
+}
+
+function mostrarAvisoDiaFuturo() {
+    const toast = document.getElementById('future-day-toast');
+    if (!toast) {
+        alert("Ainda não chegou esse dia! Você só pode escrever notas de hoje ou de dias que já passaram.");
+        return;
+    }
+
+    toast.style.display = 'block';
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => {
+        toast.style.display = 'none';
+    }, 3000);
+}
+
 function renderCalendar() {
     const tituloMes = document.querySelector('.current-month');
     if (tituloMes) {
@@ -98,6 +121,11 @@ function renderCalendar() {
 
         // Evento de clique para o dia no calendário
         dayCell.addEventListener('click', function() {
+            if (ehDiaFuturo(anoAtual, mesAtual, dia)) {
+                mostrarAvisoDiaFuturo();
+                return;
+            }
+
             chaveDiaSelecionado = chaveDia;
             const regDia = registros[chaveDiaSelecionado];
 

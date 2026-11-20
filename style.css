@@ -1,4 +1,6 @@
-/* CORES DO SITE */
+/* ==========================================================================
+   1. VARIÁVEIS E RESET GLOBAL
+   ========================================================================== */
 :root {
     --bg-color: #f4f5f0;
     --card-bg: #ffffff;
@@ -8,13 +10,19 @@
     --text-muted: #8c968c;
 }
 
-* {   /* remove quadrado azul de TUDO ao clicar */
-    -webkit-tap-highlight-color: transparent;}
-button:focus, div:focus, span:focus {  /* remove as bordinhas */
-    outline: none;}
+*, *::before, *::after {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent; /* Remove quadrado azul ao tocar no celular */
+}
 
-/* TRAVAR LAYOUT NO CELULAR - é a coisa toda, a tela toda */
-html, body {
+button:focus,
+div:focus,
+span:focus {
+    outline: none;
+}
+
+html,
+body {
     height: 100%;
     width: 100%;
     margin: 0;
@@ -27,7 +35,9 @@ html, body {
     align-items: center;
 }
 
-/* SIMULA TELA DO APP */
+/* ==========================================================================
+   2. ESTRUTURA DO APP E NAVEGAÇÃO
+   ========================================================================== */
 .app-container {
     width: 100%;
     max-width: 500px;
@@ -36,12 +46,11 @@ html, body {
     background-color: var(--bg-color);
     display: flex;
     flex-direction: column;
-    position: relative;          /* ele é a anconra para tudo que aparecer ficar dentro!!*/
+    position: relative; /* Âncora para overlays e menus flutuantes */
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
     overflow: hidden;
 }
 
-/* Cabeçalho */
 header {
     padding: 10px 20px;
     display: flex;
@@ -50,14 +59,15 @@ header {
     background-color: var(--card-bg);
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
     width: 90%;
 }
 
 .header-title {
-   font-size: 1.1rem;
-   cursor: pointer;
+    font-size: 1.1rem;
+    cursor: pointer;
 }
+
 .header-title:hover {
     color: var(--primary);
 }
@@ -70,13 +80,10 @@ header {
     border-radius: 15px;
 }
 
-/* Área de conteúdo do meio */
 .content-area {
     flex: 1;
     overflow-y: auto;
-    padding-right: 20px; 
-    padding-left: 20px;
-    padding-bottom: 20px;
+    padding: 0 20px 20px 20px;
 }
 
 .tab-content {
@@ -98,7 +105,7 @@ header {
     align-items: center;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
-    box-shadow: 0 -4px 15px rgba(0,0,0,0.03);
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.03);
     position: relative;
     z-index: 10;
 }
@@ -108,12 +115,10 @@ header {
     border: none;
     font-size: 1.6rem;
     cursor: pointer;
-    transition: transform 0.2s;
     width: 45px;
     height: 45px;
     border-radius: 50%;
-    transition: background-color 0.2s ease;
-
+    transition: transform 0.2s, background-color 0.2s ease;
 }
 
 .nav-btn:hover {
@@ -122,11 +127,11 @@ header {
 
 .nav-btn.active {
     background-color: var(--primary-light);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    transform: none;    /* tira o o scal para não tremer */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    transform: none;
 }
 
-/* Botão central do pet com destaque */
+/* Botão central do pet */
 .pet-btn {
     background: var(--primary-light);
     font-size: 1.8rem;
@@ -139,13 +144,12 @@ header {
     position: relative;
     top: -15px;
     border: 3px solid var(--bg-color);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-
-
-/* =========================== JOURNAL AREA ============================= */
-
+/* ==========================================================================
+   3. DIÁRIO — CABEÇALHO, CALENDÁRIO E AVISOS
+   ========================================================================== */
 #tab-journal.active {
     display: flex;
     flex-direction: column;
@@ -154,22 +158,12 @@ header {
     height: 100%;
 }
 
-/* Cabeçalho do Diário (Mês e botão de modo) */
 .journal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 10px 0 10px;
-    color: var(--text-main); 
-}
-.header-change-mode {
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: color 0.2s;
-}
-
-.header-change-mode:hover {
-    color: var(--primary);
+    color: var(--text-main);
 }
 
 .header-month {
@@ -181,48 +175,45 @@ header {
     font-size: 1.1rem;
     font-weight: bold;
 }
+
 .current-month {
     width: 5.5rem;
     text-align: center;
 }
+
 .month-btn {
     background: none;
     cursor: pointer;
     border: none;
     font-size: 1.2rem;
 }
+
 .month-btn:hover {
     color: var(--primary);
 }
 
+.header-change-mode {
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: color 0.2s;
+}
 
+.header-change-mode:hover {
+    color: var(--primary);
+}
 
-
-
-/* ================ CALENDARIO */
+/* Grade do calendário */
 .calendar-view {
     background: none;
     border-radius: 20px;
     padding: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-    
-    /* Mágica da grade de 7 colunas iguais */
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 12px 6px; /* 12px entre linhas, 6px entre colunas */
+    gap: 12px 6px;
     justify-items: center;
     align-items: center;
     min-height: 300px;
-}
-
-/* Cada célula do dia vira uma coluna (bolinha em cima, número embaixo) */
-.calendar-day {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3px; /* Espacinho entre a bolinha e o número */
-    cursor: pointer;
 }
 
 .calendar-weekday {
@@ -231,7 +222,15 @@ header {
     opacity: 0.5;
 }
 
-/* A bolinha do humor/registro */
+.calendar-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    cursor: pointer;
+}
+
 .day-circle {
     width: 36px;
     height: 36px;
@@ -254,7 +253,6 @@ header {
     background-color: var(--primary-light);
 }
 
-/* O número do dia logo abaixo */
 .day-number {
     font-size: 0.75rem;
     color: var(--text-main);
@@ -262,36 +260,55 @@ header {
     opacity: 0.7;
 }
 
-/* Destaque para o dia de hoje na bolinha */
+/* Destaque do dia atual */
 .day-circle.today {
-    border: 2px solid var(--primary-color, #6b9e78);
+    border: 2px solid var(--primary);
 }
 
-.day-circle.today:not(.empty){    /* paea quando tiver rostinh, não ter borda */
-    border: none;
+.calendar-day:has(.day-circle.today) .day-number {
+    background-color: var(--primary);
+    color: #ffffff;
+    padding: 1px 7px;
+    border-radius: 999px;
+    font-weight: 600;
+    opacity: 1;
 }
 
-/* Espaços vazios invisíveis */
+/* Espaços vazios */
 .calendar-day.empty {
     cursor: default;
 }
+
 .calendar-day.empty .day-circle {
     background-color: transparent;
 }
 
-/* Visão de lista (Ficará escondida até alternarmos o modo) */
+/* Aviso de dia futuro */
+.future-toast {
+    background-color: var(--card-bg);
+    color: var(--text-main);
+    border-left: 4px solid var(--primary);
+    padding: 12px 16px;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    text-align: left;
+}
+
+/* Visão de lista (oculta por padrão) */
 .list-view {
     display: none;
 }
 
-
-/* ====================== CARTÃO ZINHO DIARIO */
+/* ==========================================================================
+   4. DIÁRIO — CARTÃO INICIAL E CARTÃO DE RESUMO
+   ========================================================================== */
 .daily-card {
     background-color: var(--card-bg);
     border-radius: 20px;
-    padding: 20px, 10px, 20px, 10px;
+    padding: 20px 10px;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
 }
 
 .daily-card p {
@@ -300,14 +317,11 @@ header {
     color: var(--text-main);
 }
 
-/* Botões de humor (As carinhas) */
 .daily-card-humor {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    padding-bottom: 20px;
-    padding-left: 5px;                 /* OLHA SE ESSA DISTANCIA FICOU BOA DEPOIS */
-    padding-right: 5px;
+    padding: 0 5px 20px 5px;
 }
 
 .daily-card-humor button {
@@ -315,7 +329,7 @@ header {
     border: none;
     width: 60px;
     height: 60px;
-    border-radius: 50%; /* Deixa os botões redondinhos estilo feijão/DailyBean */
+    border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -329,351 +343,16 @@ header {
 }
 
 .daily-card-humor button:hover {
-    transform: scale(1.1); /* Dá um zoom fofinho ao passar o mouse */
-    background-color: var(--primary-light);
-}
-
-/* ======================== ESCREVER ENTRADA DO DIARIO ======================== */
-
-.overlay {
-    display: flex;
-    align-items: flex-end;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 30;
-    background-color: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-.overlay.active {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-.overlay.active .journal-entry {
-    transform: translateY(0);
-}
-
-.journal-entry {
-    transform: translateY(100%);
-    transition: transform 0.3s ease;
-    background-color: var(--bg-color);
-    width: 100%;
-    max-height: 97%;
-    min-height: 90%;
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    border-radius: 30px 30px 0 0;
-    overflow: hidden;
-}
-
-.journal-entry-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    background-color: var(--text-muted);
-    color: var(--bg-color);
-    font-size: 1.1rem;
-    font-weight: bold;
-    padding: 15px 30px 15px 30px;
-    border-radius: 20px 20px 0 0;
-}
-
-.entry-header-close:hover {
-    color: var(--text-main);
-    cursor: pointer;
-    font-weight: bold; 
-}
-
-/* ======================= ESCREVER ENTRADA */
-.journal-entry-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-/* Cada cartaozinho branco arredondado */
-.entry-card {
-    background-color: #ffffff;
-    border-radius: 20px;
-    padding: 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-}
-
-.card-title {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: #555;
-    margin-bottom: 12px;
-    text-align: center;
-    margin-top: 0;
-    margin-left: 5px;
-}
-
-/* Linha dos rostinhos de humor */
-.mood-options-row {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
-.mood-options-row button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 50px;
-    height: 50px;
-    transition: transform 0.2s;
-}
-
-.mood-options-row button:hover {
     transform: scale(1.1);
-}
-
-.mood-options-row button img{
-    width: 45px;
-    height: 45px;
-}
-
-
-/* Área de texto limpa */
-#journal-text {
-    margin-top: 14px;
-    width: 95%;
-    border: 1px solid #eee;
-    border-radius: 12px;
-    padding: 10px;
-    font-family: inherit;
-    resize: none;
-    outline: none;
-    background-color: #faf9f6;
-    overflow: hidden;
-}
-
-#journal-text:focus {
-    border-color: #8ab4f8;
-}
-
-/* Seção de Fotos */
-.photo-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.photo-card-header .card-title {
-    margin-bottom: 0;
-}
-
-.add-photo-icon-btn {
-    background: #e6f4ea;
-    color: #137333;
-    border: none;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.photo-slots-row {
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
-}
-
-.photo-slot {
-    flex: 1;
-    height: 120px;
-    border: 1px solid #dcdcdc;
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    color: #aaa;
-    cursor: pointer;
-}
-
-.photo-slots-row img {
-    width: 20px;
-    height: 20px;
-    opacity: 0.2;
-}
-
-/* Destaque visual para o botão de humor selecionado no modal */
-.mood-options-row button.active {
     background-color: var(--primary-light);
-    border-radius: 50%;
-    transform: scale(1.1);
-    border: 2px solid var(--primary);
 }
 
-
-/* Rodapé com botão Concluir */
-.journal-entry-footer {
-    padding: 12px 16px;
-    background: var(--bg-color);
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    border-top: 1px solid rgba(0,0,0,0.05);
-}
-
-.favorite-icon-btn {
-    background: #fff;
-    border: 1px solid #ddd;
-    width: 48px;
-    height: 48px;
-    border-radius: 16px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.save-btn {
-    flex: 1;
-    height: 48px;
-    border: none;
-    border-radius: 16px;
-    background-color: #34a853; /* Verde aconchegante igual ao print */
-    color: white;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-/* Visão de lista (Ficará escondida até alternarmos o modo) */
-.list-view {
-    display: none;
-}
-
-
-
-
-
-
-
-
-/* ===========================================    QUARTO DO PET ============================ */
-
-.tab-pet {
-    position: relative;  /* ancora para tudo */
-}
-
-/* Quarto do Pet centralizado */
-.room-pet {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; 
-    gap: 200px;
-    flex: 1;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.pet-avatar {
-    text-align: center;
-    animation: floatPet 3s ease-in-out infinite;
-    cursor: pointer;
-}
-
-.pet-avatar img {
-    width: 200px;
-    line-height: 1;
-    display: block;
-    filter: drop-shadow(0 12px 20px rgba(0,0,0,0.12));
-}
-
-@keyframes floatPet {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-.pet-menu {
-    display: none;
-}
-
-.pet-menu.active {
-    display: flex;
-    flex-direction: column;
-    position: absolute; /* Flutua por cima de tudo sem empurrar o sapo */
-    top: 55px;          /* Distância exata logo abaixo do cabeçalho */
-    
-    left: 25px;
-
-    background-color: var(--card-bg);
-    width: 180px;       /* Um tamanho legal para caber os textos */
-    padding: 12px;
-    gap: 8px;
-    border-radius: 16px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    z-index: 20;        /* Garante que fica por cima do sapinho */
-    animation: fadeInPetMenu 0.2s ease-in-out;
-}
-
-.pet-menu button {
-    background-color: var(--bg-color);
-    border: none;
-    padding: 10px 14px;
-    text-align: center;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--text-main);
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
-}
-
-.pet-menu button:hover {
-    background-color: var(--primary-light);
-    color: var(--primary);
-}
-
-/* Pequena animação suave de aparição */
-@keyframes fadeInPetMenu {
-    from { opacity: 0; transform: translateY(-8px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-
-
-
-
+/* Cartão de resumo da entrada salva */
 .entry-summary-card {
     background-color: var(--card-bg);
     border-radius: 20px;
     padding: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
     margin-top: 15px;
     display: flex;
     flex-direction: column;
@@ -739,6 +418,315 @@ header {
     font-size: 0.95rem;
     color: var(--text-main);
     line-height: 1.5;
-    white-space: pre-wrap; /* Mantém as quebras de linha que o usuário digitou */
+    white-space: pre-wrap;
     word-break: break-word;
+}
+
+/* ==========================================================================
+   5. MODAL DE ESCREVER / EDITAR ENTRADA
+   ========================================================================== */
+.overlay {
+    display: flex;
+    align-items: flex-end;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 30;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.overlay.active .journal-entry {
+    transform: translateY(0);
+}
+
+.journal-entry {
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    background-color: var(--bg-color);
+    width: 100%;
+    max-height: 97%;
+    min-height: 90%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px 30px 0 0;
+    overflow: hidden;
+}
+
+.journal-entry-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--text-muted);
+    color: var(--bg-color);
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 15px 30px;
+    border-radius: 20px 20px 0 0;
+}
+
+.entry-header-close:hover {
+    color: var(--text-main);
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.journal-entry-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.entry-card {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+.card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #555;
+    margin: 0 0 12px 5px;
+    text-align: center;
+}
+
+/* Seleção de humor no modal */
+.mood-options-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.mood-options-row button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    transition: transform 0.2s;
+}
+
+.mood-options-row button:hover {
+    transform: scale(1.1);
+}
+
+.mood-options-row button img {
+    width: 45px;
+    height: 45px;
+}
+
+.mood-options-row button.active {
+    background-color: var(--primary-light);
+    border-radius: 50%;
+    transform: scale(1.1);
+    border: 2px solid var(--primary);
+}
+
+/* Campo de texto */
+#journal-text {
+    margin-top: 14px;
+    width: 95%;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 10px;
+    font-family: inherit;
+    resize: none;
+    outline: none;
+    background-color: #faf9f6;
+    overflow: hidden;
+}
+
+#journal-text:focus {
+    border-color: #8ab4f8;
+}
+
+/* Seção de fotos */
+.photo-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.photo-card-header .card-title {
+    margin-bottom: 0;
+}
+
+.add-photo-icon-btn {
+    background: #e6f4ea;
+    color: #137333;
+    border: none;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.photo-slots-row {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.photo-slot {
+    flex: 1;
+    height: 120px;
+    border: 1px solid #dcdcdc;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: #aaa;
+    cursor: pointer;
+}
+
+.photo-slots-row img {
+    width: 20px;
+    height: 20px;
+    opacity: 0.2;
+}
+
+/* Rodapé do modal */
+.journal-entry-footer {
+    padding: 12px 16px;
+    background: var(--bg-color);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.favorite-icon-btn {
+    background: var(--card-bg);
+    border: 1px solid #ddd;
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.save-btn {
+    flex: 1;
+    height: 48px;
+    border: none;
+    border-radius: 16px;
+    background-color: #34a853;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   6. QUARTO DO PET
+   ========================================================================== */
+.tab-pet {
+    position: relative;
+}
+
+.room-pet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 200px;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.pet-avatar {
+    text-align: center;
+    animation: floatPet 3s ease-in-out infinite;
+    cursor: pointer;
+}
+
+.pet-avatar img {
+    width: 200px;
+    line-height: 1;
+    display: block;
+    filter: drop-shadow(0 12px 20px rgba(0, 0, 0, 0.12));
+}
+
+@keyframes floatPet {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.pet-menu {
+    display: none;
+}
+
+.pet-menu.active {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 55px;
+    left: 25px;
+    background-color: var(--card-bg);
+    width: 180px;
+    padding: 12px;
+    gap: 8px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    z-index: 20;
+    animation: fadeInPetMenu 0.2s ease-in-out;
+}
+
+.pet-menu button {
+    background-color: var(--bg-color);
+    border: none;
+    padding: 10px 14px;
+    text-align: center;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.pet-menu button:hover {
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+@keyframes fadeInPetMenu {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
