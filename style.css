@@ -974,7 +974,7 @@ header {
 .task-item-checkbox {
     width: 18px;
     height: 18px;
-    accent-color: var(--primary);
+    accent-color: transparent;
     cursor: pointer;
     flex-shrink: 0;
 }
