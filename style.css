@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. VARIÁVEIS E RESET GLOBAL
+1. VARIÁVEIS E RESET GLOBAL
    ========================================================================== */
 :root {
     --bg-color: #f4f5f0;
@@ -16,11 +16,13 @@
     box-sizing: border-box;
     -webkit-tap-highlight-color: transparent; /* Remove quadrado azul ao tocar no celular */
 }
+
 button:focus, div:focus, span:focus {
     outline: none;
 }
-* span {
-    cursor: default;          /* não fica o cursor de selecionar em textos */
+
+span {
+    cursor: default; /* Não fica o cursor de selecionar em textos */
 }
 
 /* NÃO TER BARRA DE SCROLL */
@@ -30,6 +32,7 @@ button:focus, div:focus, span:focus {
     scrollbar-width: none;        /* Firefox */
     -ms-overflow-style: none;     /* Edge antigo */
 }
+
 .content-area::-webkit-scrollbar,
 #tab-journal.active::-webkit-scrollbar,
 .journal-entry-content::-webkit-scrollbar {
@@ -52,7 +55,7 @@ body {
 
 
 /* ==========================================================================
-   2. ESTRUTURA DO APP E NAVEGAÇÃO
+2. ESTRUTURA DO APP E NAVEGAÇÃO
    ========================================================================== */
 .app-container {
     width: 100%;
@@ -129,28 +132,30 @@ header {
 .nav-btn {
     background: none;
     border: none;
-    font-size: 1.6rem;
     cursor: pointer;
     width: 45px;
     height: 45px;
-    border-radius: 50%;
     transition: transform 0.2s, background-color 0.2s ease;
+}
+
+.nav-btn img {
+    width: 31px;
+    height: 31px;
+    opacity: 0.2;
 }
 
 .nav-btn:hover {
     transform: scale(1.1);
 }
 
-.nav-btn.active {
-    background-color: var(--primary-light);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+.nav-btn.active img {
+    opacity: 0.7;
     transform: none;
 }
 
 /* Botão central do pet */
 .pet-btn {
     background: var(--primary-light);
-    font-size: 1.8rem;
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -163,8 +168,13 @@ header {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
+.pet-btn img {
+    width: 40px;
+    height: 40px;
+    opacity: 0.5;
+}
 /* ==========================================================================
-   3. DIÁRIO — CABEÇALHO, CALENDÁRIO E AVISOS
+3. DIÁRIO — CABEÇALHO, CALENDÁRIO E AVISOS
    ========================================================================== */
 #tab-journal.active {
     display: flex;
@@ -409,7 +419,7 @@ header {
 }
 
 /* ==========================================================================
-   4. DIÁRIO — CARTÃO INICIAL E CARTÃO DE RESUMO
+4. DIÁRIO — CARTÃO INICIAL E CARTÃO DE RESUMO
    ========================================================================== */
 .daily-card {
     background-color: var(--card-bg);
@@ -493,9 +503,11 @@ header {
     gap: 6px;
 }
 
-.favorite-star {
+.favorite-star img {
     cursor: pointer;
-    color: #ccc;
+    opacity: 0.5;
+    width: 12px;
+    height: 12px;
 }
 
 .summary-weekday {
@@ -521,8 +533,9 @@ header {
 .summary-actions button img {
     opacity: 0.3;
     width: 21px;
-    height: 21px
+    height: 21px;
 }
+
 .summary-actions button:hover {
     background-color: var(--bg-color);
 }
@@ -558,7 +571,7 @@ header {
 }
 
 /* ==========================================================================
-   5. MODAL DE ESCREVER / EDITAR ENTRADA
+5. MODAL DE ESCREVER / EDITAR ENTRADA
    ========================================================================== */
 .overlay {
     display: flex;
@@ -593,7 +606,7 @@ header {
     min-height: 90%;
     display: flex;
     flex-direction: column;
-    border-radius: 20px 20px 0  0;
+    border-radius: 20px 20px 0 0;
     overflow: hidden;
 }
 
@@ -608,9 +621,11 @@ header {
     font-weight: bold;
     padding: 15px 30px;
 }
+
 .entry-header-close {
     transition: transform 0.2s;
 }
+
 .entry-header-close:hover {
     transform: scale(1.1);
     cursor: pointer;
@@ -707,17 +722,49 @@ header {
 
 .add-photo-icon-btn {
     background: #e6f4ea;
-    color: var(--savegreen);
+    color: var(--save-green);
     border: none;
     width: 28px;
     height: 28px;
     border-radius: 30%;
     font-weight: bold;
     cursor: pointer;
-    transition: transform 0.2s
+    transition: transform 0.2s;
 }
+
 .add-photo-icon-btn:hover {
     transform: scale(1.1);
+}
+
+.photo-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.remove-photo-btn {
+    background-color: #f3ece7;
+    color: var(--text-muted);
+    border: none;
+    border-radius: 12px;
+    padding: 4px 10px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.sort-order-btn {
+    align-self: flex-end;
+    background-color: var(--card-bg);
+    color: var(--text-muted);
+    border: none;
+    border-radius: 14px;
+    padding: 6px 12px;
+    margin-bottom: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .photo-slot {
@@ -759,11 +806,15 @@ header {
     width: 48px;
     height: 48px;
     border-radius: 16px;
-    font-size: 1.2rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+.favorite-icon-btn img {
+    opacity: 0.3;
+    width: 25px;
+    height: 25px;
 }
 
 .save-btn {
@@ -779,7 +830,7 @@ header {
 }
 
 /* ==========================================================================
-   6. QUARTO DO PET
+6. QUARTO DO PET
    ========================================================================== */
 .tab-pet {
     position: relative;
@@ -944,6 +995,7 @@ header {
     background-color: var(--close-red);
     color: var(--bg-color);
 }
+
 .confirm-btn.confirm {
     background-color: var(--save-green);
     color: var(--bg-color);

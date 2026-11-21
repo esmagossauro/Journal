@@ -51,6 +51,7 @@ let acaoConfirmacaoAtual = null;
 let acaoCancelamentoAtual = null;
 let toastTimeout = null;
 let modoVisualizacao = 'calendar'; // 'calendar' | 'list'
+let ordemListaRecentePrimeiro = true; // true: mais recentes primeiro | false: mais antigos primeiro
 
 // =============================== REFERÊNCIAS DO DOM =================================
 const dailyCardOriginal = document.querySelector('.daily-card:not(.list-daily-card)');
@@ -68,6 +69,7 @@ const btnDeleteEntry = document.getElementById('btn-delete-entry');
 const calendarViewEl = document.querySelector('.calendar-view');
 const listViewEl = document.querySelector('.list-view');
 const btnChangeMode = document.querySelector('.header-change-mode');
+const btnSortOrder = document.getElementById('btn-sort-order');
 
 const overlay = document.querySelector('.overlay');
 const btnFecharModal = document.querySelector('.entry-header-close');
@@ -78,6 +80,7 @@ const botoesHumorPrincipal = document.querySelectorAll('.daily-card-humor:not(.l
 const botoesHumorLista = document.querySelectorAll('.list-card-humor button');
 
 const btnChoosePhoto = document.getElementById('btn-choose-photo');
+const btnRemovePhoto = document.getElementById('btn-remove-photo');
 const photoSlotModal = document.getElementById('photo-slot-modal');
 const photoFileInput = document.getElementById('photo-file-input');
 
@@ -155,8 +158,13 @@ function obterRegistrosOrdenados() {
             const [anoB, mesB, diaB] = chaveB.split('-').map(Number);
             const dataA = new Date(anoA, mesA - 1, diaA);
             const dataB = new Date(anoB, mesB - 1, diaB);
-            return dataB - dataA;
+            return ordemListaRecentePrimeiro ? (dataB - dataA) : (dataA - dataB);
         });
+}
+
+function atualizarBotaoOrdemLista() {
+    if (!btnSortOrder) return;
+    btnSortOrder.textContent = ordemListaRecentePrimeiro ? 'Mais recentes ↓' : 'Mais antigos ↑';
 }
 
 function atualizarCartaoHumorLista() {
@@ -284,12 +292,14 @@ function renderizarPreviewFotoModal(fotoBase64) {
         img.alt = 'Prévia da foto';
         img.className = 'photo-modal-preview';
         photoSlotModal.appendChild(img);
+        if (btnRemovePhoto) btnRemovePhoto.style.display = 'inline-flex';
     } else {
         const icone = document.createElement('img');
         icone.src = 'img/camera.svg';
         icone.alt = 'Adicionar foto';
         icone.className = 'slot-icon';
         photoSlotModal.appendChild(icone);
+        if (btnRemovePhoto) btnRemovePhoto.style.display = 'none';
     }
 }
 
@@ -320,7 +330,7 @@ function preencherResumoNaTela(chaveDia, regDia) {
     const nomeDiaSemana = diasCompletos[dataObj.getDay()];
 
     if (summaryDateText) summaryDateText.textContent = `${diaNum} de ${nomeMes}`;
-    if (summaryWeekdayText) summaryWeekdayText.textContent = `${nomeDiaSemana.slice(0, 3)}. · ${ano}`;
+    if (summaryWeekdayText) summaryWeekdayText.textContent = `${nomeDiaSemana.slice(0, 3)}. ${ano}`;
 
     renderizarFotoResumo(foto);
 }
@@ -446,7 +456,7 @@ function renderListView() {
 
         const dataSub = document.createElement('div');
         dataSub.className = 'list-entry-weekday';
-        dataSub.textContent = `${nomeDiaSemana.slice(0, 3)}. · ${ano}`;
+        dataSub.textContent = `${nomeDiaSemana.slice(0, 3)}. ${ano}`;
 
         infoData.appendChild(dataPrincipal);
         infoData.appendChild(dataSub);
@@ -488,6 +498,10 @@ function atualizarModoVisualizacao() {
 
     if (calendarViewEl) {
         calendarViewEl.style.display = estaEmLista ? 'none' : 'grid';
+    }
+
+    if (btnSortOrder) {
+        btnSortOrder.style.display = estaEmLista ? 'inline-flex' : 'none';
     }
 
     if (listViewEl) {
@@ -566,6 +580,16 @@ if (btnChangeMode) {
     });
 }
 
+if (btnSortOrder) {
+    btnSortOrder.addEventListener('click', function() {
+        ordemListaRecentePrimeiro = !ordemListaRecentePrimeiro;
+        atualizarBotaoOrdemLista();
+        if (modoVisualizacao === 'list') {
+            renderListView();
+        }
+    });
+}
+
 if (confirmCancelBtn) {
     confirmCancelBtn.addEventListener('click', function() {
         const callbackCancelar = acaoCancelamentoAtual;
@@ -603,7 +627,7 @@ if (btnDeleteEntry) {
         if (!chaveDiaSelecionado) return;
 
         abrirConfirmacao({
-            mensagem: 'Vai dar tchau para esse registro? Ele some para sempre... <span class="confirm-subnote">Isso é muito tempo</span>',
+            mensagem: 'Vai dar tchau para esse registro? Ele some para sempre. <span class="confirm-subnote">Isso é muito tempo</span>',
             textoConfirmar: 'Excluir',
             textoCancelar: 'Cancelar',
             tipoBotao: 'danger',
@@ -650,6 +674,14 @@ if (btnChoosePhoto && photoFileInput) {
 
 if (photoSlotModal && photoFileInput) {
     photoSlotModal.addEventListener('click', () => photoFileInput.click());
+}
+
+if (btnRemovePhoto) {
+    btnRemovePhoto.addEventListener('click', function() {
+        fotoSelecionadaTemp = '';
+        renderizarPreviewFotoModal('');
+        if (photoFileInput) photoFileInput.value = '';
+    });
 }
 
 if (photoFileInput) {
@@ -743,5 +775,6 @@ function togglePetMenu() {
 }
 
 // =============================== INICIALIZAÇÃO =================================
+atualizarBotaoOrdemLista();
 renderCalendar();
 atualizarModoVisualizacao();
