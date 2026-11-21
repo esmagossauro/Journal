@@ -68,7 +68,7 @@
                             <div>
                                 <div class="summary-date-main">
                                     <span id="summary-date-text">13 de nov.</span>
-                                    <span class="favorite-star">✩</span>
+                                    <span class="favorite-star"><img src="https://img.icons8.com/puffy/64/christmas-star.png" alt=""></span>
                                 </div>
                                 <span id="summary-weekday-text" class="summary-weekday">sex. 2026</span>
                             </div>
@@ -87,8 +87,8 @@
                     <div class="summary-text-content" id="summary-text-content"></div>
                 </div>
 
-                <!-- Visão em lista (para uso futuro) -->
-                 <div class="daily-card list-daily-card" id="list-daily-card" style="display: none;">
+                <!-- Visão em lista -->
+                <div class="daily-card list-daily-card" id="list-daily-card" style="display: none;">
                     <p class="daily-card-title">Como você está hoje?</p>
                     <div class="daily-card-humor list-card-humor">
                         <button type="button" data-humor="img/feliz.png" aria-label="Feliz">
@@ -108,6 +108,8 @@
                         </button>
                     </div>
                 </div>
+
+                <button type="button" class="sort-order-btn" id="btn-sort-order" style="display: none;">Mais recentes ↓</button>
                 <div class="list-view"></div>
 
                 <!-- Modal deslizante de escrever / editar entrada -->
@@ -153,7 +155,12 @@
                             <div class="entry-card">
                                 <div class="photo-card-header">
                                     <span class="card-title">Foto de hoje</span>
-                                    <button type="button" class="add-photo-icon-btn" id="btn-choose-photo">+</button>
+                                    <div class="photo-header-actions">
+                                        <button type="button" class="remove-photo-btn" id="btn-remove-photo" style="display: none;">
+                                            Remover foto
+                                        </button>
+                                        <button type="button" class="add-photo-icon-btn" id="btn-choose-photo">+</button>
+                                    </div>
                                 </div>
 
                                 <div class="photo-slot" id="photo-slot-modal">
@@ -164,7 +171,7 @@
 
                             <!-- Rodapé com botão Salvar -->
                             <div class="journal-entry-footer">
-                                <button type="button" class="favorite-icon-btn">✩</button>
+                                <button type="button" class="favorite-icon-btn"><img src="https://img.icons8.com/puffy/64/christmas-star.png" alt=""></button>
                                 <button type="button" class="save-btn">Salvar</button>
                             </div>
 
@@ -222,18 +229,17 @@
              ===================================================================== -->
         <footer>
             <nav class="bottom-nav">
-                <button type="button" class="nav-btn active" onclick="switchTab('tab-journal', this)">📅</button>
-                <button type="button" class="nav-btn" onclick="switchTab('tab-gym', this)">🏋️</button>
-                <button type="button" class="nav-btn pet-btn" onclick="switchTab('tab-pet', this)">🐸</button>
-                <button type="button" class="nav-btn" onclick="switchTab('tab-tasks', this)">📝</button>
-                <button type="button" class="nav-btn" onclick="switchTab('tab-profile', this)">👤</button>
+                <button type="button" class="nav-btn active" onclick="switchTab('tab-journal', this)"><img src="https://img.icons8.com/puffy/64/read.png" alt="journal"/></button>
+                <button type="button" class="nav-btn" onclick="switchTab('tab-gym', this)"><img src="https://img.icons8.com/puffy/64/dumbbell.png" alt="journal"/></button>
+                <button type="button" class="nav-btn pet-btn" onclick="switchTab('tab-pet', this)"><img src="https://img.icons8.com/puffy/64/christmas-star.png" alt="pet"/></button>
+                <button type="button" class="nav-btn" onclick="switchTab('tab-tasks', this)"><img src="https://img.icons8.com/puffy/64/checked-2.png" alt="tasks"/></button>
+                <button type="button" class="nav-btn" onclick="switchTab('tab-profile', this)"><img src="https://img.icons8.com/puffy/64/user.png" alt="profile"></button>
             </nav>
         </footer>
 
-
         <!-- =====================================================================
-        MODAL DE CONFIRMAÇÃO (EXCLUIR REGISTRO / SAIR SEM SALVAR)
-        ===================================================================== -->
+             MODAL DE CONFIRMAÇÃO (EXCLUIR REGISTRO / SAIR SEM SALVAR)
+             ===================================================================== -->
         <div class="confirm-overlay" id="confirm-overlay">
             <div class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
                 <p class="confirm-message" id="confirm-title">Tem certeza de que deseja apagar este registro?</p>
