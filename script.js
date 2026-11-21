@@ -774,6 +774,176 @@ function togglePetMenu() {
     if (menu) menu.classList.toggle('active');
 }
 
+// TASK=====================================================================
+
+// =============================== TAREFAS POR TURNO (MANHÃ / TARDE / NOITE) =================================
+const CHAVE_TAREFAS_STORAGE = 'sapinhoTarefasTurnos';
+const TURNOS_TAREFAS = ['manha', 'tarde', 'noite'];
+
+function criarEstadoTarefasVazio() {
+    return {
+        manha: [],
+        tarde: [],
+        noite: []
+    };
+}
+
+function carregarTarefasTurnos() {
+    try {
+        const salvo = JSON.parse(localStorage.getItem(CHAVE_TAREFAS_STORAGE));
+        if (!salvo || typeof salvo !== 'object') return criarEstadoTarefasVazio();
+
+        const base = criarEstadoTarefasVazio();
+        TURNOS_TAREFAS.forEach(turno => {
+            if (Array.isArray(salvo[turno])) {
+                base[turno] = salvo[turno].filter(item => item && typeof item.texto === 'string');
+            }
+        });
+        return base;
+    } catch {
+        return criarEstadoTarefasVazio();
+    }
+}
+
+function salvarTarefasTurnos() {
+    try {
+        localStorage.setItem(CHAVE_TAREFAS_STORAGE, JSON.stringify(tarefasTurnos));
+    } catch (erro) {
+        console.warn('Não foi possível salvar as tarefas no localStorage:', erro);
+    }
+}
+
+let tarefasTurnos = carregarTarefasTurnos();
+
+function adicionarTarefaTurno(turno, textoBruto) {
+    if (!TURNOS_TAREFAS.includes(turno)) return;
+    const texto = (textoBruto || '').trim();
+    if (!texto) return;
+
+    tarefasTurnos[turno].push({
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+        texto,
+        concluida: false
+    });
+
+    salvarTarefasTurnos();
+    renderizarTurnoTarefas(turno);
+}
+
+function alternarTarefaTurno(turno, idTarefa) {
+    if (!TURNOS_TAREFAS.includes(turno)) return;
+    const lista = tarefasTurnos[turno];
+    const alvo = lista.find(item => item.id === idTarefa);
+    if (!alvo) return;
+
+    alvo.concluida = !alvo.concluida;
+    salvarTarefasTurnos();
+    renderizarTurnoTarefas(turno);
+}
+
+function removerTarefaTurno(turno, idTarefa) {
+    if (!TURNOS_TAREFAS.includes(turno)) return;
+    tarefasTurnos[turno] = tarefasTurnos[turno].filter(item => item.id !== idTarefa);
+    salvarTarefasTurnos();
+    renderizarTurnoTarefas(turno);
+}
+
+function limparTarefasConcluidas() {
+    TURNOS_TAREFAS.forEach(turno => {
+        tarefasTurnos[turno] = tarefasTurnos[turno].filter(item => !item.concluida);
+    });
+    salvarTarefasTurnos();
+    renderizarTodasTarefasTurnos();
+}
+
+function renderizarTurnoTarefas(turno) {
+    const ul = document.getElementById(`list-${turno}`);
+    const contador = document.getElementById(`count-${turno}`);
+    if (!ul) return;
+
+    const itens = tarefasTurnos[turno] || [];
+    const feitas = itens.filter(item => item.concluida).length;
+
+    if (contador) {
+        contador.textContent = `${feitas}/${itens.length}`;
+    }
+
+    ul.innerHTML = '';
+
+    itens.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'task-item-row';
+
+        const label = document.createElement('label');
+        label.className = 'task-item-label';
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.className = 'task-item-checkbox';
+        checkbox.checked = Boolean(item.concluida);
+        checkbox.addEventListener('change', () => alternarTarefaTurno(turno, item.id));
+
+        const spanTexto = document.createElement('span');
+        spanTexto.className = 'task-item-text';
+        if (item.concluida) spanTexto.classList.add('concluida');
+        spanTexto.textContent = item.texto;
+
+        label.appendChild(checkbox);
+        label.appendChild(spanTexto);
+
+        const btnExcluir = document.createElement('button');
+        btnExcluir.type = 'button';
+        btnExcluir.className = 'task-delete-btn';
+        btnExcluir.setAttribute('aria-label', 'Apagar tarefa');
+        btnExcluir.textContent = '×';
+        btnExcluir.addEventListener('click', () => removerTarefaTurno(turno, item.id));
+
+        li.appendChild(label);
+        li.appendChild(btnExcluir);
+        ul.appendChild(li);
+    });
+}
+
+function renderizarTodasTarefasTurnos() {
+    TURNOS_TAREFAS.forEach(renderizarTurnoTarefas);
+}
+
+document.querySelectorAll('.task-add-form').forEach(form => {
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        const turno = form.getAttribute('data-turno');
+        const input = form.querySelector('.task-add-input');
+        if (!input) return;
+
+        adicionarTarefaTurno(turno, input.value);
+        input.value = '';
+        input.focus();
+    });
+});
+
+const btnLimparFeitas = document.getElementById('btn-clear-done-tasks');
+if (btnLimparFeitas) {
+    btnLimparFeitas.addEventListener('click', limparTarefasConcluidas);
+}
+
+renderizarTodasTarefasTurnos();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // =============================== INICIALIZAÇÃO =================================
 atualizarBotaoOrdemLista();
 renderCalendar();

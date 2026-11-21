@@ -214,7 +214,71 @@
 
             <!-- ==================== 4. ABA TAREFAS ==================== -->
             <div class="tab-content" id="tab-tasks">
-                <h1>taskssss</h1>
+               
+                <div class="tasks-note-container">
+                    <div class="tasks-note-header">
+                        <h2 class="tasks-note-title">to do</h2>
+                        <button type="button" class="tasks-clear-done-btn" id="btn-clear-done-tasks">
+                            Limpar feitas
+                        </button>
+                    </div>
+
+                    <div class="tasks-blocks-wrapper">
+                        <!-- MANHÃ -->
+                        <section class="task-shift-card shift-manha" data-turno="manha">
+                            <div class="task-shift-header">
+                                <span class="task-shift-title">MANHÃ</span>
+                                <span class="task-shift-count" id="count-manha">0/0</span>
+                            </div>
+                            <ul class="task-items-list" id="list-manha"></ul>
+                            <form class="task-add-form" data-turno="manha">
+                                <input
+                                    type="text"
+                                    class="task-add-input"
+                                    placeholder="Adicionar em manhã..."
+                                    aria-label="Adicionar tarefa na manhã"
+                                >
+                                <button type="submit" class="task-add-btn" aria-label="Adicionar">+</button>
+                            </form>
+                        </section>
+
+                        <!-- TARDE -->
+                        <section class="task-shift-card shift-tarde" data-turno="tarde">
+                            <div class="task-shift-header">
+                                <span class="task-shift-title">TARDE</span>
+                                <span class="task-shift-count" id="count-tarde">0/0</span>
+                            </div>
+                            <ul class="task-items-list" id="list-tarde"></ul>
+                            <form class="task-add-form" data-turno="tarde">
+                                <input
+                                    type="text"
+                                    class="task-add-input"
+                                    placeholder="Adicionar em tarde..."
+                                    aria-label="Adicionar tarefa na tarde"
+                                >
+                                <button type="submit" class="task-add-btn" aria-label="Adicionar">+</button>
+                            </form>
+                        </section>
+
+                        <!-- NOITE -->
+                        <section class="task-shift-card shift-noite" data-turno="noite">
+                            <div class="task-shift-header">
+                                <span class="task-shift-title">NOITE</span>
+                                <span class="task-shift-count" id="count-noite">0/0</span>
+                            </div>
+                            <ul class="task-items-list" id="list-noite"></ul>
+                            <form class="task-add-form" data-turno="noite">
+                                <input
+                                    type="text"
+                                    class="task-add-input"
+                                    placeholder="Adicionar em noite..."
+                                    aria-label="Adicionar tarefa na noite"
+                                >
+                                <button type="submit" class="task-add-btn" aria-label="Adicionar">+</button>
+                            </form>
+                        </section>
+                    </div>
+                </div>
             </div>
 
             <!-- ==================== 5. ABA PERFIL ==================== -->

@@ -829,6 +829,234 @@ header {
     cursor: pointer;
 }
 
+
+/* ==========================================================================
+     TASKS - TO DO
+============================================================================== */
+/* ==========================================================================
+   ABA DE TAREFAS (ESTILO NOTA KEEP POR TURNO)
+   ========================================================================== */
+#tab-tasks.active {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    height: 100%;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+#tab-tasks.active::-webkit-scrollbar {
+    display: none;
+}
+
+.tasks-note-container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 20px 4px 16px 4px;
+}
+
+.tasks-note-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 4px;
+}
+
+.tasks-note-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    letter-spacing: -0.01em;
+}
+
+.tasks-clear-done-btn {
+    background-color: var(--card-bg);
+    color: var(--text-muted);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 12px;
+    padding: 6px 11px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.tasks-clear-done-btn:hover {
+    background-color: var(--primary-light);
+    color: var(--text-main);
+}
+
+.tasks-blocks-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.task-shift-card {
+    background-color: var(--card-bg);
+    border-bottom: 2px solid var(--primary);
+    border-right: 2px solid var(--primary);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+    
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.task-shift-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task-shift-title {
+    font-size: 0.85rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    color: var(--text-main);
+}
+
+.shift-manha .task-shift-title {
+    color: #ebd245;
+}
+
+.shift-tarde .task-shift-title {
+    color: #ff8859;
+}
+
+.shift-noite .task-shift-title {
+    color: #3c73bd;
+}
+
+.task-shift-count {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background-color: var(--bg-color);
+    padding: 2px 8px;
+    border-radius: 999px;
+}
+
+.task-items-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.task-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 6px 8px;
+    border-bottom: 1px dashed #4a4a4a20;
+    /*background-color: var(--bg-color);*/
+}
+
+.task-item-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    cursor: pointer;
+    font-size: 0.92rem;
+    color: var(--text-main);
+    word-break: break-word;
+}
+
+.task-item-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.task-item-text.concluida {
+    text-decoration: line-through;
+    color: var(--text-muted);
+    opacity: 0.75;
+}
+
+.task-delete-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.task-delete-btn:hover {
+    background-color: rgba(232, 106, 88, 0.14);
+    color: var(--close-red);
+}
+
+.task-add-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 2px;
+}
+
+.task-add-input {
+    flex: 1;
+    border: 1px solid #e4e6e0;
+    background-color: #fafbf8;
+    border-radius: 12px;
+    padding: 8px 12px;
+    font-size: 0.88rem;
+    font-family: inherit;
+    color: var(--text-main);
+}
+
+.task-add-input:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+
+.task-add-btn {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 12px;
+    background-color: var(--primary-light);
+    color: var(--text-main);
+    font-size: 1.15rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s, background-color 0.2s;
+}
+
+.task-add-btn:hover {
+    background-color: var(--primary);
+    color: #ffffff;
+    transform: scale(1.05);
+}
+
+
+
+
+
+
+
+
+
+
+
 /* ==========================================================================
 6. QUARTO DO PET
    ========================================================================== */
