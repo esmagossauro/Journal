@@ -88,6 +88,26 @@
                 </div>
 
                 <!-- Visão em lista (para uso futuro) -->
+                 <div class="daily-card list-daily-card" id="list-daily-card" style="display: none;">
+                    <p class="daily-card-title">Como você está hoje?</p>
+                    <div class="daily-card-humor list-card-humor">
+                        <button type="button" data-humor="img/feliz.png" aria-label="Feliz">
+                            <img src="img/feliz.png" alt="Feliz">
+                        </button>
+                        <button type="button" data-humor="img/bem.png" aria-label="Bem">
+                            <img src="img/bem.png" alt="Bem">
+                        </button>
+                        <button type="button" data-humor="img/neutro.png" aria-label="Neutro">
+                            <img src="img/neutro.png" alt="Neutro">
+                        </button>
+                        <button type="button" data-humor="img/triste.png" aria-label="Triste">
+                            <img src="img/triste.png" alt="Triste">
+                        </button>
+                        <button type="button" data-humor="img/mal.png" aria-label="Mal">
+                            <img src="img/mal.png" alt="Mal">
+                        </button>
+                    </div>
+                </div>
                 <div class="list-view"></div>
 
                 <!-- Modal deslizante de escrever / editar entrada -->
@@ -209,6 +229,20 @@
                 <button type="button" class="nav-btn" onclick="switchTab('tab-profile', this)">👤</button>
             </nav>
         </footer>
+
+
+        <!-- =====================================================================
+        MODAL DE CONFIRMAÇÃO (EXCLUIR REGISTRO / SAIR SEM SALVAR)
+        ===================================================================== -->
+        <div class="confirm-overlay" id="confirm-overlay">
+            <div class="confirm-dialog" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+                <p class="confirm-message" id="confirm-title">Tem certeza de que deseja apagar este registro?</p>
+                <div class="confirm-actions">
+                    <button type="button" class="confirm-btn cancel" id="confirm-cancel-btn">Cancelar</button>
+                    <button type="button" class="confirm-btn danger" id="confirm-ok-btn">Excluir</button>
+                </div>
+            </div>
+        </div>
 
     </div>
 
