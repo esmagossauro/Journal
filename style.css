@@ -1,9 +1,6 @@
 /* ==========================================================================
 1. VARIÁVEIS E RESET GLOBAL
    ========================================================================== */
-/* ==========================================================================
-1. VARIÁVEIS E RESET GLOBAL
-   ========================================================================== */
 :root {
     --bg-color: #f4f5f0;
     --card-bg: #ffffff;
@@ -14,6 +11,7 @@
     --primary: #8cb88b;
     --primary-light: #d8e5d7;
     --text-main: #4a524a;
+    --text-medium: #555;
     --text-muted: #8c968c;
     --save-green: #7bbe91;
     --close-red: #e86a58;
@@ -29,6 +27,7 @@ body.dark-theme {
     --primary: #b8a9f5;
     --primary-light: #342e4d;
     --text-main: #eef1f6;
+    --text-medium: #d2d2d2;
     --text-muted: #9aa3b5;
     --save-green: #6fd09a;
     --close-red: #f27c6b;
@@ -708,7 +707,7 @@ header {
 .card-title {
     font-size: 0.95rem;
     font-weight: 600;
-    color: #555;
+    color: var(--text-medium);
     margin: 0 0 12px 5px;
     text-align: center;
 }
