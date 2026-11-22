@@ -1,9 +1,16 @@
 /* ==========================================================================
 1. VARIÁVEIS E RESET GLOBAL
    ========================================================================== */
+/* ==========================================================================
+1. VARIÁVEIS E RESET GLOBAL
+   ========================================================================== */
 :root {
     --bg-color: #f4f5f0;
     --card-bg: #ffffff;
+    --surface-subtle: #ececec;
+    --input-bg: #fafbf8;
+    --task-card-bg: rgba(255, 255, 255, 0.94);
+    --border-subtle: rgba(0, 0, 0, 0.06);
     --primary: #8cb88b;
     --primary-light: #d8e5d7;
     --text-main: #4a524a;
@@ -11,6 +18,56 @@
     --save-green: #7bbe91;
     --close-red: #e86a58;
 }
+
+body.dark-theme {
+    --bg-color: #121417;
+    --card-bg: #1e2128;
+    --surface-subtle: #282c35;
+    --input-bg: #252932;
+    --task-card-bg: rgba(30, 33, 40, 0.94);
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --primary: #b8a9f5;
+    --primary-light: #342e4d;
+    --text-main: #eef1f6;
+    --text-muted: #9aa3b5;
+    --save-green: #6fd09a;
+    --close-red: #f27c6b;
+}
+
+body.dark-theme .nav-btn img,
+body.dark-theme .summary-actions button img,
+body.dark-theme .favorite-icon-btn img,
+body.dark-theme .favorite-star img,
+body.dark-theme .photo-slot .slot-icon {
+    filter: invert(1);
+}
+
+body.dark-theme #journal-text {
+    background-color: var(--input-bg);
+    border-color: var(--border-subtle);
+    color: var(--text-main);
+}
+
+body.dark-theme .day-circle {
+    background-color: var(--surface-subtle);
+}
+
+body.dark-theme .task-shift-card {
+    background-color: var(--task-card-bg);
+}
+
+body.dark-theme .task-add-input {
+    background-color: var(--input-bg);
+    border-color: var(--border-subtle);
+    color: var(--text-main);
+}
+
+body.dark-theme .remove-photo-btn {
+    background-color: var(--surface-subtle);
+    color: var(--text-main);
+}
+
+/* ============================================================== */
 
 *, *::before, *::after {
     box-sizing: border-box;
@@ -212,6 +269,7 @@ header {
     cursor: pointer;
     border: none;
     font-size: 1.2rem;
+    color: var(--text-main);
 }
 
 .month-btn:hover {
@@ -721,8 +779,8 @@ header {
 }
 
 .add-photo-icon-btn {
-    background: #e6f4ea;
-    color: var(--save-green);
+    background: var(--primary-light);
+    color: var(--text-muted);
     border: none;
     width: 28px;
     height: 28px;
@@ -734,6 +792,7 @@ header {
 
 .add-photo-icon-btn:hover {
     transform: scale(1.1);
+    color: var(--task-card-bg);
 }
 
 .photo-header-actions {
@@ -743,7 +802,7 @@ header {
 }
 
 .remove-photo-btn {
-    background-color: #f3ece7;
+    background-color: var(--surface-subtle);
     color: var(--text-muted);
     border: none;
     border-radius: 12px;
@@ -769,7 +828,7 @@ header {
 
 .photo-slot {
     height: 120px;
-    border: 1px solid #dcdcdc;
+    border: 1px solid var(--border-subtle);
     border-radius: 14px;
     display: flex;
     align-items: center;
@@ -802,7 +861,7 @@ header {
 
 .favorite-icon-btn {
     background: var(--card-bg);
-    border: 1px solid #ddd;
+    border: 1px solid var(--border-subtle);
     width: 48px;
     height: 48px;
     border-radius: 16px;
@@ -822,8 +881,8 @@ header {
     height: 48px;
     border: none;
     border-radius: 16px;
-    background-color: #34a853;
-    color: #ffffff;
+    background-color: var(--primary);
+    color: var(--card-bg);
     font-weight: bold;
     font-size: 1rem;
     cursor: pointer;
@@ -1057,7 +1116,7 @@ header {
     justify-content: space-between;
     gap: 8px;
     padding: 6px 8px;
-    border-bottom: 1px dashed #4a4a4a20;
+    border-bottom: 1px dashed var(--border-subtle);
     transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
 }
 
@@ -1103,11 +1162,33 @@ header {
 }
 
 .task-item-checkbox {
+    appearance: none;
+    -webkit-appearance: none;
     width: 18px;
     height: 18px;
-    accent-color: transparent;
+    border: 2px solid var(--text-muted);
+    border-radius: 5px;
+    background-color: transparent;
     cursor: pointer;
     flex-shrink: 0;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color 0.2s ease;
+}
+.task-item-checkbox:checked {
+    border-color: var(--border-subtle);
+    background-color: transparent;
+}
+.task-item-checkbox:checked::after {
+    content: "";
+    width: 4px;
+    height: 9px;
+    border: solid var(--primary);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-bottom: 2px;
 }
 
 .task-item-text.concluida {
@@ -1174,7 +1255,7 @@ header {
 
 .task-add-btn:hover {
     background-color: var(--primary);
-    color: #ffffff;
+    color: var(--task-card-bg);
     transform: scale(1.05);
 }
 

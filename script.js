@@ -16,6 +16,54 @@ function switchTab(tabId, clickedButton) {
     if (clickedButton) clickedButton.classList.add('active');
 }
 
+
+// =============================== MODO ESCURO (PERFIL / CONFIGURAÇÕES) =================================
+const CHAVE_MODO_ESCURO_STORAGE = 'sapinhoModoEscuro';
+const btnToggleDarkMode = document.getElementById('btn-toggle-dark-mode');
+
+function carregarPreferenciaModoEscuro() {
+    try {
+        return localStorage.getItem(CHAVE_MODO_ESCURO_STORAGE) === 'true';
+    } catch {
+        return false;
+    }
+}
+
+function salvarPreferenciaModoEscuro(ativo) {
+    try {
+        localStorage.setItem(CHAVE_MODO_ESCURO_STORAGE, String(Boolean(ativo)));
+    } catch (erro) {
+        console.warn('Não foi possível salvar a preferência de modo escuro:', erro);
+    }
+}
+
+function atualizarTextoBotaoModoEscuro(ativo) {
+    if (!btnToggleDarkMode) return;
+    btnToggleDarkMode.textContent = ativo ? 'Modo escuro: ligado' : 'Modo escuro: desligado';
+    btnToggleDarkMode.setAttribute('aria-pressed', String(Boolean(ativo)));
+}
+
+function aplicarModoEscuro(ativo, salvar = true) {
+    const estado = Boolean(ativo);
+    document.body.classList.toggle('dark-theme', estado);
+    atualizarTextoBotaoModoEscuro(estado);
+    if (salvar) {
+        salvarPreferenciaModoEscuro(estado);
+    }
+}
+
+if (btnToggleDarkMode) {
+    btnToggleDarkMode.addEventListener('click', function() {
+        const estaAtivo = document.body.classList.contains('dark-theme');
+        aplicarModoEscuro(!estaAtivo, true);
+    });
+}
+
+// Aplica o tema salvo antes da renderização inicial
+aplicarModoEscuro(carregarPreferenciaModoEscuro(), false);
+
+
+
 // =============================== DADOS E ESTADO DO DIÁRIO =================================
 const CHAVE_STORAGE = 'meuDiarioRegistros';
 
