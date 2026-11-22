@@ -6,6 +6,10 @@ function switchTab(tabId, clickedButton) {
     const targetTab = document.getElementById(tabId);
     if (targetTab) targetTab.classList.add('active');
 
+    if (tabId === 'tab-tasks' && typeof atualizarPeriodoCeuTarefas === 'function') {
+        atualizarPeriodoCeuTarefas();
+    }
+
     const allButtons = document.querySelectorAll('.nav-btn');
     allButtons.forEach(button => button.classList.remove('active'));
 
@@ -627,7 +631,7 @@ if (btnDeleteEntry) {
         if (!chaveDiaSelecionado) return;
 
         abrirConfirmacao({
-            mensagem: 'Vai dar tchau para esse registro? Ele some para sempre. <span class="confirm-subnote">Isso é muito tempo</span>',
+            mensagem: 'Excluir esse registro? Ele some para sempre <span class="confirm-subnote">(Isso é muito tempo)</span>',
             textoConfirmar: 'Excluir',
             textoCancelar: 'Cancelar',
             tipoBotao: 'danger',
@@ -774,11 +778,34 @@ function togglePetMenu() {
     if (menu) menu.classList.toggle('active');
 }
 
-// TASK=====================================================================
-
-// =============================== TAREFAS POR TURNO (MANHÃ / TARDE / NOITE) =================================
+// =============================== TAREFAS POR TURNO + ARRASTAR + CÉU DO DIA =================================
 const CHAVE_TAREFAS_STORAGE = 'sapinhoTarefasTurnos';
 const TURNOS_TAREFAS = ['manha', 'tarde', 'noite'];
+let periodoManualCeu = null;
+
+function obterPeriodoAtualPelaHora() {
+    const hora = new Date().getHours();
+    if (hora >= 5 && hora < 12) return 'manha';
+    if (hora >= 12 && hora < 18) return 'tarde';
+    return 'noite';
+}
+
+function atualizarPeriodoCeuTarefas(periodoForcado) {
+    const tabTasks = document.getElementById('tab-tasks');
+    if (!tabTasks) return;
+
+    if (periodoForcado && ['manha', 'tarde', 'noite'].includes(periodoForcado)) {
+        periodoManualCeu = periodoForcado;
+    }
+
+    const periodoFinal = periodoManualCeu || obterPeriodoAtualPelaHora();
+    tabTasks.setAttribute('data-periodo', periodoFinal);
+}
+
+function resetarPeriodoCeuAutomatico() {
+    periodoManualCeu = null;
+    atualizarPeriodoCeuTarefas();
+}
 
 function criarEstadoTarefasVazio() {
     return {
@@ -814,6 +841,7 @@ function salvarTarefasTurnos() {
 }
 
 let tarefasTurnos = carregarTarefasTurnos();
+let estadoArrasteTarefa = null;
 
 function adicionarTarefaTurno(turno, textoBruto) {
     if (!TURNOS_TAREFAS.includes(turno)) return;
@@ -856,6 +884,163 @@ function limparTarefasConcluidas() {
     renderizarTodasTarefasTurnos();
 }
 
+function moverTarefaPorPosicao(turnoOrigem, idTarefa, turnoDestino, indiceDestino) {
+    if (!TURNOS_TAREFAS.includes(turnoOrigem) || !TURNOS_TAREFAS.includes(turnoDestino)) return;
+
+    const listaOrigem = tarefasTurnos[turnoOrigem];
+    const indiceAtual = listaOrigem.findIndex(item => item.id === idTarefa);
+    if (indiceAtual === -1) return;
+
+    const [itemMovido] = listaOrigem.splice(indiceAtual, 1);
+    const listaDestino = tarefasTurnos[turnoDestino];
+
+    let alvoIndice = typeof indiceDestino === 'number' ? indiceDestino : listaDestino.length;
+    if (turnoOrigem === turnoDestino && indiceAtual < alvoIndice) {
+        alvoIndice = Math.max(0, alvoIndice - 1);
+    }
+    alvoIndice = Math.max(0, Math.min(alvoIndice, listaDestino.length));
+
+    listaDestino.splice(alvoIndice, 0, itemMovido);
+
+    salvarTarefasTurnos();
+    renderizarTodasTarefasTurnos();
+}
+
+function configurarArrasteItem(li, turno, idTarefa, handleEl) {
+    li.draggable = true;
+
+    li.addEventListener('dragstart', function(event) {
+        estadoArrasteTarefa = { turnoOrigem: turno, idTarefa };
+        li.classList.add('dragging');
+        if (event.dataTransfer) {
+            event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.setData('text/plain', idTarefa);
+        }
+    });
+
+    li.addEventListener('dragend', function() {
+        li.classList.remove('dragging');
+        document.querySelectorAll('.task-item-row.drag-over').forEach(el => el.classList.remove('drag-over'));
+        estadoArrasteTarefa = null;
+    });
+
+    li.addEventListener('dragover', function(event) {
+        if (!estadoArrasteTarefa) return;
+        event.preventDefault();
+        li.classList.add('drag-over');
+    });
+
+    li.addEventListener('dragleave', function() {
+        li.classList.remove('drag-over');
+    });
+
+    li.addEventListener('drop', function(event) {
+        event.preventDefault();
+        li.classList.remove('drag-over');
+        if (!estadoArrasteTarefa) return;
+
+        const listaEl = li.parentElement;
+        const turnoDestino = listaEl ? listaEl.getAttribute('data-turno') : turno;
+        const filhos = listaEl ? Array.from(listaEl.querySelectorAll('.task-item-row')) : [];
+        const rect = li.getBoundingClientRect();
+        const depoisDoMeio = event.clientY > rect.top + rect.height / 2;
+        const indiceBase = filhos.indexOf(li);
+        const indiceDestino = depoisDoMeio ? indiceBase + 1 : indiceBase;
+
+        moverTarefaPorPosicao(
+            estadoArrasteTarefa.turnoOrigem,
+            estadoArrasteTarefa.idTarefa,
+            turnoDestino,
+            indiceDestino
+        );
+        estadoArrasteTarefa = null;
+    });
+
+    if (handleEl) {
+        handleEl.addEventListener('touchstart', function() {
+            estadoArrasteTarefa = { turnoOrigem: turno, idTarefa };
+            li.classList.add('dragging');
+        }, { passive: true });
+
+        handleEl.addEventListener('touchmove', function(event) {
+            if (!estadoArrasteTarefa || !event.touches.length) return;
+            event.preventDefault();
+
+            const toque = event.touches[0];
+            const elementoSobToque = document.elementFromPoint(toque.clientX, toque.clientY);
+            const alvoLinha = elementoSobToque ? elementoSobToque.closest('.task-item-row') : null;
+
+            document.querySelectorAll('.task-item-row.drag-over').forEach(el => el.classList.remove('drag-over'));
+            if (alvoLinha && alvoLinha !== li) {
+                alvoLinha.classList.add('drag-over');
+            }
+        }, { passive: false });
+
+        handleEl.addEventListener('touchend', function(event) {
+            li.classList.remove('dragging');
+            const linhaSobre = document.querySelector('.task-item-row.drag-over');
+            document.querySelectorAll('.task-item-row.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+            if (!estadoArrasteTarefa) return;
+
+            if (linhaSobre) {
+                const listaEl = linhaSobre.parentElement;
+                const turnoDestino = listaEl ? listaEl.getAttribute('data-turno') : turno;
+                const filhos = listaEl ? Array.from(listaEl.querySelectorAll('.task-item-row')) : [];
+                const indiceDestino = filhos.indexOf(linhaSobre);
+
+                moverTarefaPorPosicao(
+                    estadoArrasteTarefa.turnoOrigem,
+                    estadoArrasteTarefa.idTarefa,
+                    turnoDestino,
+                    indiceDestino
+                );
+            } else if (event.changedTouches.length) {
+                const toque = event.changedTouches[0];
+                const elAlvo = document.elementFromPoint(toque.clientX, toque.clientY);
+                const listaAlvo = elAlvo ? elAlvo.closest('.task-items-list') : null;
+                if (listaAlvo) {
+                    const turnoDestino = listaAlvo.getAttribute('data-turno');
+                    const totalDestino = (tarefasTurnos[turnoDestino] || []).length;
+                    moverTarefaPorPosicao(
+                        estadoArrasteTarefa.turnoOrigem,
+                        estadoArrasteTarefa.idTarefa,
+                        turnoDestino,
+                        totalDestino
+                    );
+                }
+            }
+
+            estadoArrasteTarefa = null;
+        });
+    }
+}
+
+function configurarDropEmListasVazias() {
+    document.querySelectorAll('.task-items-list').forEach(listaEl => {
+        listaEl.addEventListener('dragover', function(event) {
+            if (!estadoArrasteTarefa) return;
+            event.preventDefault();
+        });
+
+        listaEl.addEventListener('drop', function(event) {
+            if (!estadoArrasteTarefa) return;
+            event.preventDefault();
+            if (event.target.closest('.task-item-row')) return;
+
+            const turnoDestino = listaEl.getAttribute('data-turno');
+            const totalDestino = (tarefasTurnos[turnoDestino] || []).length;
+            moverTarefaPorPosicao(
+                estadoArrasteTarefa.turnoOrigem,
+                estadoArrasteTarefa.idTarefa,
+                turnoDestino,
+                totalDestino
+            );
+            estadoArrasteTarefa = null;
+        });
+    });
+}
+
 function renderizarTurnoTarefas(turno) {
     const ul = document.getElementById(`list-${turno}`);
     const contador = document.getElementById(`count-${turno}`);
@@ -873,6 +1058,12 @@ function renderizarTurnoTarefas(turno) {
     itens.forEach(item => {
         const li = document.createElement('li');
         li.className = 'task-item-row';
+
+        const handle = document.createElement('button');
+        handle.type = 'button';
+        handle.className = 'task-drag-handle';
+        handle.setAttribute('aria-label', 'Arrastar para reordenar');
+        handle.textContent = '⋮⋮';
 
         const label = document.createElement('label');
         label.className = 'task-item-label';
@@ -898,8 +1089,11 @@ function renderizarTurnoTarefas(turno) {
         btnExcluir.textContent = '×';
         btnExcluir.addEventListener('click', () => removerTarefaTurno(turno, item.id));
 
+        li.appendChild(handle);
         li.appendChild(label);
         li.appendChild(btnExcluir);
+
+        configurarArrasteItem(li, turno, item.id, handle);
         ul.appendChild(li);
     });
 }
@@ -926,23 +1120,10 @@ if (btnLimparFeitas) {
     btnLimparFeitas.addEventListener('click', limparTarefasConcluidas);
 }
 
+atualizarPeriodoCeuTarefas();
+setInterval(() => atualizarPeriodoCeuTarefas(), 60000);
+configurarDropEmListasVazias();
 renderizarTodasTarefasTurnos();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // =============================== INICIALIZAÇÃO =================================
 atualizarBotaoOrdemLista();

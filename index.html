@@ -89,7 +89,7 @@
 
                 <!-- Visão em lista -->
                 <div class="daily-card list-daily-card" id="list-daily-card" style="display: none;">
-                    <p class="daily-card-title">Como você está hoje?</p>
+                    <p class="daily-card-title">Como foi o seu dia?</p>
                     <div class="daily-card-humor list-card-humor">
                         <button type="button" data-humor="img/feliz.png" aria-label="Feliz">
                             <img src="img/feliz.png" alt="Feliz">
@@ -213,16 +213,24 @@
             </div>
 
             <!-- ==================== 4. ABA TAREFAS ==================== -->
-            <div class="tab-content" id="tab-tasks">
-               
-                
+            <!-- ==================== 4. ABA TAREFAS ==================== -->
+            <div class="tab-content" id="tab-tasks" data-periodo="noite">
+
                 <div class="tasks-note-container">
+
+                    
                     <div class="tasks-note-header">
-                        <h2 class="tasks-note-title">t o  d o  🌱</h2>
+                        <h2 class="tasks-note-title">boa sorte!</h2>
                         <button type="button" class="tasks-clear-done-btn" id="btn-clear-done-tasks">
                             Limpar feitas
                         </button>
                     </div>
+
+                    <!-- Estrelinhas logo abaixo do cabeçalho ("boa sorte!" / "Limpar feitas") -->
+                    <span class="sky-star top-star-1">✦</span>
+                    <span class="sky-star top-star-2">✧</span>
+                    <span class="sky-star top-star-3">·</span>
+                    <span class="sky-star top-star-4">✦</span>
 
                     <div class="tasks-blocks-wrapper">
                         <!-- MANHÃ -->
@@ -231,7 +239,7 @@
                                 <span class="task-shift-title">MANHÃ ☀︎</span>
                                 <span class="task-shift-count" id="count-manha">0/0</span>
                             </div>
-                            <ul class="task-items-list" id="list-manha"></ul>
+                            <ul class="task-items-list" id="list-manha" data-turno="manha"></ul>
                             <form class="task-add-form" data-turno="manha">
                                 <input
                                     type="text"
@@ -249,7 +257,7 @@
                                 <span class="task-shift-title">TARDE ✦</span>
                                 <span class="task-shift-count" id="count-tarde">0/0</span>
                             </div>
-                            <ul class="task-items-list" id="list-tarde"></ul>
+                            <ul class="task-items-list" id="list-tarde" data-turno="tarde"></ul>
                             <form class="task-add-form" data-turno="tarde">
                                 <input
                                     type="text"
@@ -267,7 +275,7 @@
                                 <span class="task-shift-title">NOITE ⏾</span>
                                 <span class="task-shift-count" id="count-noite">0/0</span>
                             </div>
-                            <ul class="task-items-list" id="list-noite"></ul>
+                            <ul class="task-items-list" id="list-noite" data-turno="noite"></ul>
                             <form class="task-add-form" data-turno="noite">
                                 <input
                                     type="text"
@@ -280,6 +288,23 @@
                         </section>
                     </div>
                 </div>
+
+                <!-- Cenário de céu com ondinha e estrelas na base -->
+                <div class="tasks-sky-backdrop" aria-hidden="true">
+
+                    <!-- Estrelas no fundo -->
+                    <span class="sky-star star-1">✦</span>
+                    <span class="sky-star star-2">✧</span>
+                    <span class="sky-star star-3">✦</span>
+                    <span class="sky-star star-4">·</span>
+                    <span class="sky-star star-5">✧</span>
+
+                    <svg class="tasks-sky-wave" viewBox="0 0 500 180" preserveAspectRatio="none">
+                        <path class="wave-back" d="M0,45 C110,15 190,85 310,50 C400,25 460,65 500,40 L500,180 L0,180 Z"></path>
+                        <path class="wave-front" d="M0,75 C95,105 185,35 295,72 C385,102 450,55 500,78 L500,180 L0,180 Z"></path>
+                    </svg>
+                </div>
+
             </div>
 
             <!-- ==================== 5. ABA PERFIL ==================== -->
@@ -295,7 +320,7 @@
         <footer>
             <nav class="bottom-nav">
                 <button type="button" class="nav-btn active" onclick="switchTab('tab-journal', this)"><img src="https://img.icons8.com/puffy/64/read.png" alt="journal"/></button>
-                <button type="button" class="nav-btn" onclick="switchTab('tab-gym', this)"><img src="https://img.icons8.com/puffy/64/dumbbell.png" alt="journal"/></button>
+                <button type="button" class="nav-btn" onclick="switchTab('tab-gym', this)"><img src="https://img.icons8.com/puffy/64/dumbbell.png" alt="gym"/></button>
                 <button type="button" class="nav-btn pet-btn" onclick="switchTab('tab-pet', this)"><img src="https://img.icons8.com/puffy/64/christmas-star.png" alt="pet"/></button>
                 <button type="button" class="nav-btn" onclick="switchTab('tab-tasks', this)"><img src="https://img.icons8.com/puffy/64/checked-2.png" alt="tasks"/></button>
                 <button type="button" class="nav-btn" onclick="switchTab('tab-profile', this)"><img src="https://img.icons8.com/puffy/64/user.png" alt="profile"></button>
