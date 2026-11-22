@@ -781,6 +781,11 @@ function togglePetMenu() {
 // =============================== TAREFAS POR TURNO + ARRASTAR + CÉU DO DIA =================================
 const CHAVE_TAREFAS_STORAGE = 'sapinhoTarefasTurnos';
 const TURNOS_TAREFAS = ['manha', 'tarde', 'noite'];
+const SAUDACOES_TAREFAS = {
+    manha: 'bom dia!',
+    tarde: 'boa tarde!',
+    noite: 'boa noite!'
+};
 let periodoManualCeu = null;
 
 function obterPeriodoAtualPelaHora() {
@@ -788,6 +793,12 @@ function obterPeriodoAtualPelaHora() {
     if (hora >= 5 && hora < 12) return 'manha';
     if (hora >= 12 && hora < 18) return 'tarde';
     return 'noite';
+}
+
+function atualizarSaudacaoTarefas(periodo) {
+    const tituloEl = document.getElementById('tasks-greeting-title');
+    if (!tituloEl) return;
+    tituloEl.textContent = SAUDACOES_TAREFAS[periodo] || 'bom dia!';
 }
 
 function atualizarPeriodoCeuTarefas(periodoForcado) {
@@ -800,7 +811,9 @@ function atualizarPeriodoCeuTarefas(periodoForcado) {
 
     const periodoFinal = periodoManualCeu || obterPeriodoAtualPelaHora();
     tabTasks.setAttribute('data-periodo', periodoFinal);
+    atualizarSaudacaoTarefas(periodoFinal);
 }
+
 
 function resetarPeriodoCeuAutomatico() {
     periodoManualCeu = null;
